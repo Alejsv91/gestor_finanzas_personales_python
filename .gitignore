@@ -1,0 +1,42 @@
+# --- Entornos Virtuales ---
+venv/
+env/
+ENV/
+.env
+.venv
+
+# --- Caché de Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# --- Configuración y caché de Pytest ---
+.pytest_cache/
+.tests_cache/
+vcr_cassettes/
+
+# --- Cobertura de código (si usas pytest-cov) ---
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# --- Archivos del sistema (Mac) ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- Archivos de editores de código ---
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
