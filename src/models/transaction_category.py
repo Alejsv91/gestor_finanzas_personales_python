@@ -1,7 +1,9 @@
 class TransactionCategory:
-    name: str
+    _name: str
+    _enabled: bool
     
     def __init__(self, name):
-        self.name = name
+        pass
+
         
     
