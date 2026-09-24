@@ -1,6 +1,6 @@
-from transaction_category import TransactionCategory
-from enums import TransactionType
-from currency import Currency
+from .transaction_category import TransactionCategory
+from .enums import TransactionType
+from .currency import Currency
 from datetime import date
 from ..utils.validators import checkInstance
 

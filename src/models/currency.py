@@ -40,7 +40,7 @@ class Currency:
         self._symbol = value
         
     @property
-    def symbol(self) -> bool:
+    def is_base(self) -> bool:
         return self._is_base
     
     @symbol.setter
