@@ -1,6 +1,8 @@
 from transaction_category import TransactionCategory
+from enums import TransactionType
 from currency import Currency
 from datetime import date
+from ..utils.validators import checkInstance
 
 class Transaction:
     _amount: float
@@ -8,44 +10,43 @@ class Transaction:
     _category: TransactionCategory
     _transaction_date: date
     _currency: Currency
+    _type: TransactionType
     
-    def __init__(self, amount: float, description: str, category: TransactionCategory, currency: Currency):
+    def __init__(self, amount: float, description: str, category: TransactionCategory, currency: Currency, type: TransactionType):
         self.amount = amount
         self.description = description
         self.category = category
         self.currency = currency
+        self.type = type
         pass
     
     #properties
+    @property
+    def type(self) -> TransactionType:
+        return self._type
+    
+    @type.setter
+    def type(self, value):
+        checkInstance(value, TransactionType, "This value must be an instance of TransactionType")
+        self._type = value
+        
     @property
     def currency(self) -> Currency:
         return self._currency
     
     @currency.setter
     def currency(self, value: Currency):
-        try:
-            if not(isinstance(value, date)):
-                raise ValueError("Current value is not a date object")
+        checkInstance(value, Currency, "This value must be an instance of Currency")
+        self._currency = ValueError
             
-        except (ValueError, TypeError) as e:
-            raise SystemError(f"System error when trying to save amount data. Error description: {e}")
-            
-        
-    
     @property
     def transaction_date(self) -> date:
         return self._transaction_date
     
     @transaction_date.setter 
     def transaction_date(self, value: date):
-        try:
-            if not(isinstance(value, date)):
-                raise ValueError("Current value is not a date object")
-            
-            self._transaction_date
-        except (ValueError, TypeError) as e:
-            raise SystemError(f"System error when trying to save amount data. Error description: {e}")
-        
+        checkInstance(value, date, "This value must be an instance of date")
+        self._transaction_date = value
     
     @property
     def category(self):
@@ -53,17 +54,8 @@ class Transaction:
     
     @category.setter
     def category(self, value: TransactionCategory):
-        try:
-            if(isinstance(value, TransactionCategory)):
-                raise ValueError("Current value does not have the expected class")
-            
-            elif(value == None):
-                raise ValueError("Category can not be None")            
-            
-            self._category = value
-            
-        except (ValueError, TypeError) as e:
-            raise SystemError(f"System error when trying to save amount data. Error description: {e}")
+        checkInstance(value, TransactionCategory, "This value must be an instance of TransactionCategory")
+        self._category = value
     
     @property
     def amount(self) -> float:
@@ -71,23 +63,14 @@ class Transaction:
     
     @amount.setter
     def amount(self, value: float):
-        try:
-            self._amount = float(value)
-            
-        except (ValueError, TypeError) as e: 
-            raise SystemError(f"System error when trying to save amount data. Error description: {e}")
+        checkInstance(value, float, "This value must be an instance of float")
+        self._amount = value
         
     @property
     def description(self) -> str:
         return self._description
     
     @description.setter
-    def description(self, value):
-        try:
-            if(value == ""):
-                raise ValueError("Description should not be empty")
-            
-            self._description = str(value)
-            
-        except (ValueError, TypeError) as e:
-            raise SystemError(f"System error when trying to save amount data. Error description: {e}")
+    def description(self, value: str):
+        checkInstance(value, str, "This value must be an instace of str")
+        self._description = value
