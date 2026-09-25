@@ -43,7 +43,15 @@ class Currency:
     def is_base(self) -> bool:
         return self._is_base
     
-    @symbol.setter
+    @is_base.setter
     def is_base(self, value: bool):
         checkInstance(value, bool, "This value should be a bool")
         self._is_base = value
+        
+    def to_dict(self) -> dict:
+        return {
+            "name": self.name,
+            "code": self.code,
+            "symbol": self.symbol,
+            "is_base": self.is_base
+        }

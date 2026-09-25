@@ -2,13 +2,20 @@ from src.views.transaction_table import TransactionTable
 from src.models.transaction_category import TransactionCategory
 from src.models.currency import Currency
 from src.models.transaction import Transaction
-from src.models.enums import TransactionType
+from src.models.enums import *
+from src.utils.csv_utils import file_exist
+
 
 def main():
     # Creating harcoded info
     tc_comida = TransactionCategory("Comida", True)
     colon = Currency("Colon Costarricense", "CRC", "₡", True)
     first_transaction = Transaction(10000.0, "Compras en Walmart", tc_comida, colon, TransactionType.EXPENSE)
+    
+    #Setup
+    if not file_exist(FileNames.CURRENCY):
+        print("We need to setup the currency")
+    
     
     # Instantiates the table using the hardcoded default values
     view = TransactionTable([first_transaction])
