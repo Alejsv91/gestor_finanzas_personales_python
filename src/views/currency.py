@@ -1,6 +1,7 @@
 import FreeSimpleGUI as sg
 from ..models.currency import Currency
 from ..utils.validators import checkInstance
+from ..utils.csv_utils import save_currencies
 
 
 class CurrencyView:
@@ -16,15 +17,14 @@ class CurrencyView:
         while True:
             event, values = window.read()
             
-            if event == (sg.WIN_CLOSED, "Cancel"):
+            if event == "Cancel":
                 break
             
             if event == "Continue":
-                base_currency = values
-                print(f"Selected currency: {base_currency}")
-                # Save the first csv with currency info
+                self.set_base_currency(values)
+                # Save the first csv with currency
+                save_currencies(self.default_currencies)
                 
-        
     @property
     def default_currencies(self) -> list[Currency]:
         return self._default_currencies
@@ -32,6 +32,10 @@ class CurrencyView:
     @default_currencies.setter
     def default_currencies(self, value: list[Currency]):
         self._default_currencies = value
+    
+    def set_base_currency(self, base_currency_config: dict[str, bool]) -> list[Currency]:
+        for currency in self.default_currencies:
+            currency.is_base = base_currency_config[currency.code]
         
     def create_layout(self):
         currency_options = [

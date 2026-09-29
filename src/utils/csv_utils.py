@@ -3,7 +3,7 @@ from pathlib import Path
 from ..models.currency import Currency
 from ..models.enums import FileNames
 
-def save_currencies(currencies: list[Currency], file_path: str) -> None:
+def save_currencies(currencies: list[Currency]) -> None:
     with open(FileNames.CURRENCY, "w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(
             file,
