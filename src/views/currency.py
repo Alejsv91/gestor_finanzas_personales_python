@@ -24,6 +24,7 @@ class CurrencyView:
                 self.set_base_currency(values)
                 # Save the first csv with currency
                 save_currencies(self.default_currencies)
+                window.close()
                 
     @property
     def default_currencies(self) -> list[Currency]:
@@ -61,9 +62,4 @@ class CurrencyView:
         for curr in currency_options:
             rb.append([sg.Radio(curr.name, "Currency", default=True, key=curr.code)])
             
-        return rb            
-        
-        
-        
-        
-        
+        return rb

@@ -3,12 +3,21 @@ from ..utils.validators import checkInstance
 class TransactionCategory:
     _name: str
     _enabled: bool
+    _id: int
     
     def __init__(self, name: str, enabled: bool):
         self.name = name
         self.enabled = enabled
     
     #property
+    @property
+    def id(self) -> int:
+        return self._id
+    
+    @id.setter
+    def id(self, value: int):
+        self._id = value        
+    
     @property
     def name(self) -> str:
         return self._name

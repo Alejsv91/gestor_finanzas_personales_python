@@ -5,6 +5,7 @@ from src.models.transaction import Transaction
 from src.models.enums import *
 from src.utils.csv_utils import file_exist
 from src.views.currency import CurrencyView
+from src.views.transaction_category_table import TransactionCategoryView
 
 
 def main():
@@ -18,6 +19,12 @@ def main():
         print("We need to setup the currency")
         view = CurrencyView()
         view.show()
+        
+    if not file_exist(FileNames.TRANSACTION_CATEGORY):
+        print("We need to setup transaction categories")
+        view = TransactionCategoryView()
+        view.show()
+        
     
     
     # Instantiates the table using the hardcoded default values

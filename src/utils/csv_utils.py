@@ -15,6 +15,22 @@ def save_currencies(currencies: list[Currency]) -> None:
         for currency in currencies:
             writer.writerow(currency.to_dict())
             
+def read_currency_data() -> list[Currency]:
+    currencies = list[Currency]
+    with open(FileNames.CURRENCY, newline="") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            currencies.append(
+                Currency(
+                    name=row["name"],
+                    code=row["code"],
+                    symbol=row["symbol"],
+                    is_base=row["is_base"] == "True"
+                )
+            )
+    
+    return currencies
+            
 def file_exist(file_path: FileNames):
     fp = Path(file_path)
     

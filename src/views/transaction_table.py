@@ -7,11 +7,15 @@ class TransactionTable:
     
     def __init__(self, transactions: list[Transaction]):
         self.headings = transactions
+        # Creating window layout
         sg.theme('Dark Brown 1')
         header =  self.create_header()
         required_columns = len(self.headings)
         input_rows = [[sg.Input(size=(15,1), pad=(0,0)) for col in range(required_columns)] for row in range(10)]
-        layout = header + input_rows
+        buttons = [[sg.Button("Add transaction")],
+                   [sg.Button("Close")]]
+        layout = header + input_rows + buttons
+        
         window = sg.Window('Table Simulation', layout, font='Courier 12')
         event, values = window.read()
     
@@ -36,4 +40,3 @@ class TransactionTable:
     
     def create_header(self) -> list[str]:
         return [[sg.Text('')] + [sg.Text(h, size=(14,1)) for h in self.headings]]
-            

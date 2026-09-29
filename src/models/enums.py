@@ -5,4 +5,6 @@ class TransactionType(Enum):
     EXPENSE = "EXPENSE"
     
 class FileNames(str, Enum):
-    CURRENCY = "data/currency.csv"
+    CURRENCY = "data/currency.csv",
+    TRANSACTIONS = "data/transactions.csv"
+    TRANSACTION_CATEGORY = "data/transaction_category.csv"
