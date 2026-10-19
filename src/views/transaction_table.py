@@ -1,23 +1,27 @@
 import FreeSimpleGUI as sg
 from ..models.transaction import Transaction
 from ..utils.validators import checkInstance
+from ..views.transaction_category_table import TransactionCategoryView
 
 class TransactionTable:
     _headings: list[str]
+    _transactions: list[Transaction]
     
-    def __init__(self, transactions: list[Transaction]):
-        self.headings = transactions
-        # Creating window layout
-        sg.theme('Dark Brown 1')
-        header =  self.create_header()
-        required_columns = len(self.headings)
-        input_rows = [[sg.Input(size=(15,1), pad=(0,0)) for col in range(required_columns)] for row in range(10)]
-        buttons = [[sg.Button("Add transaction")],
-                   [sg.Button("Close")]]
-        layout = header + input_rows + buttons
+    def __init__(self):
+        # self.headings = transactions
+        self.layout = [[sg.Button("Add category")]]
         
-        window = sg.Window('Table Simulation', layout, font='Courier 12')
-        event, values = window.read()
+    def show(self):
+        self.window = sg.Window("Transactions table", self.layout, font="Courier 12")
+        while True:
+            event, values = self.window.read()
+            
+            if event == sg.WIN_CLOSED:
+                break
+            
+            if event == 'Add category':
+                view = TransactionCategoryView()
+                view.show()
     
     @property
     def headings(self) -> list[str]:

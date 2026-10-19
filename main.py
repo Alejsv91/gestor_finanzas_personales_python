@@ -28,10 +28,8 @@ def main():
         view = TransactionCategoryView()
         view.show()
         
-    
-    
     # Instantiates the table using the hardcoded default values
-    view = TransactionTable([first_transaction])
+    view = TransactionTable()
     view.show()
 
 if __name__ == "__main__":

@@ -38,6 +38,17 @@ def writeDataAsDict(file, titleList: list[str], items: list[any]):
         
     for item in items:
         writer.writerow(item.to_dict())
+
+def read_transaction_category_data() -> list[TransactionCategory]:
+    transaction_category: list[TransactionCategory] = []
+    with open(FileNames.TRANSACTION_CATEGORY, newline="") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            transaction_category.append(
+                TransactionCategory(id=row["id"],
+                                    name=row["name"],
+                                    enabled=row["enabled"])
+            )
     
             
 def read_currency_data() -> list[Currency]:

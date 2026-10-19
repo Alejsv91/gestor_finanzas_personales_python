@@ -1,12 +1,20 @@
 import FreeSimpleGUI as sg
 from ..models.transaction_category import TransactionCategory
 from ..utils.csv_utils import save_transaction_categories
+from ..utils.csv_utils import read_transaction_category_data
 
 class TransactionCategoryView:
     _headings: list[str] = ['NAME', 'IS ENABLE']
+    _categories: list[TransactionCategory] = []
     
-    def __init__(self):
-        self._categories: list[TransactionCategory] = []
+    def __init__(self, load_transactions_category: bool):
+        # Continuar aqui
+        # Cuando se cargan los categories mostrarlos en el table
+        if load_transactions_category:
+            self.categories = read_transaction_category_data()
+        else:
+            self.categories = []
+            
         self.layout = [
             [sg.Text("Category Name:"), 
              sg.Input("Add the category name", key="CATEGORY_NAME"), 
@@ -41,16 +49,24 @@ class TransactionCategoryView:
     
     @categories.setter
     def categories(self, value: TransactionCategory):
-        exist = any(
-            category.name.lower() == value.name.lower()
-            for category in self._categories
-        )
-        
-        if exist:
-            print(f"The transaction '{value.name}' exist")
-            raise ValueError(f"The transaction '{value.name}' already exists")
+        if isinstance(value, list):
+            for item in value:
+                if any(category.name.lower() == item.name.lower() for category in self._categories):
+                    raise ValueError(f"The transaction '{item.name}' already exist")
                 
-        self._categories.append(value)
+                self._categories.append(item)
+                
+        elif isinstance(value, TransactionCategory):    
+            exist = any(
+                category.name.lower() == value.name.lower()
+                for category in self._categories
+            )
+        
+            if exist:
+                print(f"The transaction '{value.name}' exist")
+                raise ValueError(f"The transaction '{value.name}' already exists")
+                    
+            self._categories.append(value)
                 
     @property
     def headings(self):
