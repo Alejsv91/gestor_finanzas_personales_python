@@ -74,3 +74,13 @@ class Transaction:
     def description(self, value: str):
         checkInstance(value, str, "This value must be an instace of str")
         self._description = value
+        
+    def to_dict(self) -> dict:
+        return {
+            "amount": self.amount,
+            "category": self.category,
+            "currency" : self.currency,
+            "description": self.description,
+            "transaction_date": self.transaction_date,
+            "type": self.type
+        }

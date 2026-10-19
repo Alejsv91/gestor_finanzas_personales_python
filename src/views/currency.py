@@ -11,21 +11,8 @@ class CurrencyView:
         self.default_currencies = [
             Currency("Colon Costarricense", "CRC", "₡", True),
             Currency("Dolar United States Of America", "USD", "$", False)]
+        self.window = self.create_layout()
         
-        window = self.create_layout()
-        
-        while True:
-            event, values = window.read()
-            
-            if event == "Cancel":
-                break
-            
-            if event == "Continue":
-                self.set_base_currency(values)
-                # Save the first csv with currency
-                save_currencies(self.default_currencies)
-                window.close()
-                
     @property
     def default_currencies(self) -> list[Currency]:
         return self._default_currencies
@@ -33,6 +20,20 @@ class CurrencyView:
     @default_currencies.setter
     def default_currencies(self, value: list[Currency]):
         self._default_currencies = value
+        
+    def show(self):
+        window = self.create_layout()
+        
+        while True:
+            event, values = window.read()
+            
+            if event == sg.WIN_CLOSED or event == "Cancel":
+                break
+            
+            if event == "Continue":
+                self.set_base_currency(values)
+                save_currencies(self.default_currencies)
+                window.close()        
     
     def set_base_currency(self, base_currency_config: dict[str, bool]) -> list[Currency]:
         for currency in self.default_currencies:

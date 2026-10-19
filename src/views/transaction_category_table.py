@@ -1,28 +1,39 @@
 import FreeSimpleGUI as sg
 from ..models.transaction_category import TransactionCategory
+from ..utils.csv_utils import save_transaction_categories
 
 class TransactionCategoryView:
     _headings: list[str] = ['NAME', 'IS ENABLE']
-    _categories: list[TransactionCategory] = []
     
     def __init__(self):
-        self._categories = []
-        # Add input fields
-        layout = [[sg.Text("Category Name:"), 
-                   sg.Input("Add the category name", key="CATEGORY_NAME"), 
-                   sg.Button("Add Category")],                  
-                  [self.create_table()]]  
-                
-        # creating window
-        window = sg.Window("Transaction category table", layout, font="Courier 12")
-        event, values = window.read()
+        self._categories: list[TransactionCategory] = []
+        self.layout = [
+            [sg.Text("Category Name:"), 
+             sg.Input("Add the category name", key="CATEGORY_NAME"), 
+             sg.Button("Add Category")],                  
+            [self.create_table()],
+            [sg.Button("Next")]
+        ]  
+        self.window = None
+
+    def show(self):
+        """Este método abre la ventana y controla el bucle de eventos de forma segura"""
+        self.window = sg.Window("Transaction category table", self.layout, font="Courier 12")
         
         while True:
-            event, values = window.read()
+            event, values = self.window.read()
+            
+            if event == sg.WIN_CLOSED:
+                break
             
             if event == "Add Category":
-                window = self.add_category(window, values)
+                self.add_category(values)
+            
+            elif event == "Nex":
+                save_transaction_categories(self.categories)
+                break
                 
+        self.window.close() 
                              
     @property
     def categories(self) -> list[TransactionCategory]:
@@ -37,48 +48,45 @@ class TransactionCategoryView:
         
         if exist:
             print(f"The transaction '{value.name}' exist")
-            raise ValueError(f"The transaction '{value.name}' exist")
+            raise ValueError(f"The transaction '{value.name}' already exists")
                 
         self._categories.append(value)
                 
-        
     @property
     def headings(self):
         return self._headings
     
-    def add_category(self, window, values):
+    def add_category(self, values):
+        if len(self.categories) > 0:
+            new_id = max(category.id for category in self._categories) + 1
+        else:
+            new_id = 0
+        
         category = TransactionCategory(
-                    values["CATEGORY_NAME"],
-                    True                    
-                )
+            new_id,
+            values["CATEGORY_NAME"],
+            True                    
+        )
         
         try:
             self.categories = category
         except ValueError as e:
             sg.popup_error(str(e), title="Error")
+            return 
                 
         table_data = [
-                    [c.name, c.enabled]
-                    for c in self.categories
-                ]
+            [c.name, c.enabled]
+            for c in self.categories
+        ]
                 
-        window["TABLE"].update(values=table_data)
-        return window
+        self.window["TABLE"].update(values=table_data)
         
     def create_table(self):
-        return sg.Table(values=[],
-                 headings=self.headings,
-                 key="TABLE",
-                 auto_size_columns=True,
-                 expand_x=True,
-                 expand_y=True)
-        # sg.theme('Dark Brown 1')
-        # header = [[sg.Text('')] + [sg.Text(h, size=(14,1)) for h in self.headings]]
-        # required_columns = len(self.headings)
-        # input_rows = [[sg.Input(size=(15,1), pad=(0,0)) for col in range(required_columns)] for row in range(10)]
-        
-        # table_layout = [
-        #     [sg.Text(h, size=(14, 1)) for h in self.headings]
-        #     ] + input_rows
-        
-        # return [[sg.Column(table_layout,justification='center',expand_x=True)]]
+        return sg.Table(
+            values=[],
+            headings=self.headings,
+            key="TABLE",
+            auto_size_columns=True,
+            expand_x=True,
+            expand_y=True
+        )

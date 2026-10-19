@@ -5,9 +5,10 @@ class TransactionCategory:
     _enabled: bool
     _id: int
     
-    def __init__(self, name: str, enabled: bool):
+    def __init__(self, id: int ,name: str, enabled: bool):
         self.name = name
         self.enabled = enabled
+        self.id = id
     
     #property
     @property
@@ -35,6 +36,14 @@ class TransactionCategory:
     def enabled(self, value):
         checkInstance(value, bool, "enabled value should be bool type")
         self._enabled = value
+        
+        
+    def to_dict(self) -> dict:
+        return {
+            "name": self.name,
+            "enabled": self.enabled,
+            "id" :self.id
+        }
         
         
 
