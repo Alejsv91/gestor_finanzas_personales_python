@@ -6,6 +6,7 @@ class TransactionCategoryView:
     _categories: list[TransactionCategory] = []
     
     def __init__(self):
+        self._categories = []
         # Add input fields
         layout = [[sg.Text("Category Name:"), 
                    sg.Input("Add the category name", key="CATEGORY_NAME"), 
@@ -28,8 +29,17 @@ class TransactionCategoryView:
         return self._categories
     
     @categories.setter
-    def categoires(self, value):
-        self._categories = value
+    def categories(self, value: TransactionCategory):
+        exist = any(
+            category.name.lower() == value.name.lower()
+            for category in self._categories
+        )
+        
+        if exist:
+            print(f"The transaction '{value.name}' exist")
+            raise ValueError(f"The transaction '{value.name}' exist")
+                
+        self._categories.append(value)
                 
         
     @property
@@ -41,18 +51,19 @@ class TransactionCategoryView:
                     values["CATEGORY_NAME"],
                     True                    
                 )
-                
-        self.categories.append(category)
-        print(self.categories)   
+        
+        try:
+            self.categories = category
+        except ValueError as e:
+            sg.popup_error(str(e), title="Error")
                 
         table_data = [
                     [c.name, c.enabled]
-                    for c in self.categoires
+                    for c in self.categories
                 ]
                 
         window["TABLE"].update(values=table_data)
         return window
-        
         
     def create_table(self):
         return sg.Table(values=[],

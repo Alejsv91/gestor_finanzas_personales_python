@@ -6,6 +6,7 @@ from src.models.enums import *
 from src.utils.csv_utils import file_exist
 from src.views.currency import CurrencyView
 from src.views.transaction_category_table import TransactionCategoryView
+import FreeSimpleGUI as sg
 
 
 def main():
@@ -17,11 +18,13 @@ def main():
     #Setup
     if not file_exist(FileNames.CURRENCY):
         print("We need to setup the currency")
+        sg.popup("We need to setup the currency")
         view = CurrencyView()
         view.show()
         
     if not file_exist(FileNames.TRANSACTION_CATEGORY):
         print("We need to setup transaction categories")
+        sg.popup("We need to setup transaction categories")
         view = TransactionCategoryView()
         view.show()
         
