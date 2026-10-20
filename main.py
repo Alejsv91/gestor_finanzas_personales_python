@@ -25,7 +25,7 @@ def main():
     if not file_exist(FileNames.TRANSACTION_CATEGORY):
         print("We need to setup transaction categories")
         sg.popup("We need to setup transaction categories")
-        view = TransactionCategoryView()
+        view = TransactionCategoryView(False)
         view.show()
         
     # Instantiates the table using the hardcoded default values

@@ -20,7 +20,7 @@ class TransactionTable:
                 break
             
             if event == 'Add category':
-                view = TransactionCategoryView()
+                view = TransactionCategoryView(True)
                 view.show()
     
     @property

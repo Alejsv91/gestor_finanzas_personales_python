@@ -4,23 +4,27 @@ from ..utils.csv_utils import save_transaction_categories
 from ..utils.csv_utils import read_transaction_category_data
 
 class TransactionCategoryView:
-    _headings: list[str] = ['NAME', 'IS ENABLE']
+    _headings: list[str] = ['ID', 'NAME', 'IS ENABLE']
     _categories: list[TransactionCategory] = []
     
     def __init__(self, load_transactions_category: bool):
-        # Continuar aqui
-        # Cuando se cargan los categories mostrarlos en el table
+        self._categories: list[TransactionCategory] = []
+        
         if load_transactions_category:
             self.categories = read_transaction_category_data()
+            self.table_values = [
+                [obj.id, obj.name, obj.enabled]
+                for obj in self.categories
+            ]
         else:
-            self.categories = []
+            self.table_values = []
             
         self.layout = [
             [sg.Text("Category Name:"), 
              sg.Input("Add the category name", key="CATEGORY_NAME"), 
              sg.Button("Add Category")],                  
-            [self.create_table()],
-            [sg.Button("Next")]
+            [self.create_table(self.table_values)],
+            [sg.Button("Save and Close")]
         ]  
         self.window = None
 
@@ -37,7 +41,7 @@ class TransactionCategoryView:
             if event == "Add Category":
                 self.add_category(values)
             
-            elif event == "Nex":
+            elif event == "Save and Close":
                 save_transaction_categories(self.categories)
                 break
                 
@@ -91,15 +95,15 @@ class TransactionCategoryView:
             return 
                 
         table_data = [
-            [c.name, c.enabled]
+            [c.id, c.name, c.enabled]
             for c in self.categories
         ]
                 
         self.window["TABLE"].update(values=table_data)
         
-    def create_table(self):
+    def create_table(self, values: list[TransactionCategory] | None):
         return sg.Table(
-            values=[],
+            values=values,
             headings=self.headings,
             key="TABLE",
             auto_size_columns=True,

@@ -9,7 +9,7 @@ def save_transaction_categories(transaction_categories: list[TransactionCategory
     try: 
         with open(FileNames.TRANSACTION_CATEGORY, "w", newline="", encoding="utf-8") as file:
             # CORREGIDO: Ahora son 3 columnas independientes en la lista
-            writeDataAsDict(file, ["name", "enabled", "id"], transaction_categories)
+            writeDataAsDict(file, ["id","name", "enabled"], transaction_categories)
             
         sg.popup("Transaction Category data saved!")
         
@@ -45,10 +45,12 @@ def read_transaction_category_data() -> list[TransactionCategory]:
         reader = csv.DictReader(file)
         for row in reader:
             transaction_category.append(
-                TransactionCategory(id=row["id"],
-                                    name=row["name"],
-                                    enabled=row["enabled"])
+                TransactionCategory(id=int(row["id"]),
+                                    name=str(row["name"]),
+                                    enabled=bool(row["enabled"]))
             )
+            
+    return transaction_category
     
             
 def read_currency_data() -> list[Currency]:
