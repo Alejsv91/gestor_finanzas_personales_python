@@ -1,6 +1,5 @@
 import FreeSimpleGUI as sg
 from ..models.currency import Currency
-from ..utils.validators import checkInstance
 from ..utils.csv_utils import save_currencies
 
 

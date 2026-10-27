@@ -66,8 +66,9 @@ class TransactionView:
         return value.split(" - ")[0]
     
     def get_currency_code(self) -> str:
-        selected_currency = read_currency_data()
-        return selected_currency[0].code
+        currencies = read_currency_data()
+        base = next(filter(lambda c: c.is_base is True, currencies), None)
+        return base.code
     
     def save_transaction(self, values) -> bool:
         transactions: list[Transaction] = read_transactions_data()
