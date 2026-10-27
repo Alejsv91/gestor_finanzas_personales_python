@@ -2,7 +2,7 @@ import FreeSimpleGUI as sg
 from ..models.transaction import Transaction
 from ..models.enums import TransactionType, TransactionTableKey
 from ..views.transaction_category_table import TransactionCategoryView
-from ..views.expense import TransactionView
+from .transaction import TransactionView
 from ..utils.csv_utils import read_transactions_data
 
 class TransactionTable:
