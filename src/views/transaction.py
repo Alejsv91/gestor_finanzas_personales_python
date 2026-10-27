@@ -1,6 +1,5 @@
 import FreeSimpleGUI as sg
 from ..models.transaction import Transaction
-from ..models.currency import Currency
 from ..models.enums import TransactionType, ExpenseKey 
 from ..utils.csv_utils import save_transactions, read_transaction_category_data, read_currency_data, read_transactions_data
 from ..models.transaction_category import TransactionCategory
@@ -13,6 +12,7 @@ class TransactionView:
     def __init__(self, transaction_type: TransactionType):
         self.transaction_type = transaction_type
         
+        # Configuración dinámica de títulos y botones según el tipo
         if self.transaction_type == TransactionType.EXPENSE:
             self.title = "Expense Manager"
             self.button_text = "Save Expense"
@@ -54,7 +54,8 @@ class TransactionView:
                 
                 case ExpenseKey.SAVE:
                     if self.save_transaction(values):
-                        label = "Expense" if self.transaction_type == TransactionType.EXPENSE else TransactionType.INCOME
+                        # Corrección: Texto limpio para el popup de éxito
+                        label = "Expense" if self.transaction_type == TransactionType.EXPENSE else "Income"
                         sg.popup(f"{label} saved!")
                         self.window.close()
                         break
@@ -83,13 +84,18 @@ class TransactionView:
             return False
         
         try:
-            amount_value = float(values[ExpenseKey.AMOUNT])
-            if amount_value <= 0:
+            amount_value = abs(float(values[ExpenseKey.AMOUNT]))
+            if amount_value == 0:
                 sg.popup_error("Amount should be greater than 0")
                 return False
         except:
             sg.popup_error("Amount should be a valid number")
             return False
+        
+        if self.transaction_type == TransactionType.EXPENSE:
+            amount_value = -amount_value  
+        else:
+            amount_value = amount_value   
         
         transaction_category_id = self.get_category_id(values[ExpenseKey.CATEGORY])
         currency_code = self.get_currency_code()
