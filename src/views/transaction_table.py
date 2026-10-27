@@ -33,6 +33,7 @@ class TransactionTable:
                     view = ExpenseView()
                     view.show()
                     
+                    self.transactions = read_transactions_data()
                     self.window['TABLE'].update(values=self.create_table_values())
                 
                 case _:
