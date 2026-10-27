@@ -10,10 +10,6 @@ import FreeSimpleGUI as sg
 
 
 def main():
-    # Creating harcoded info
-    # tc_comida = TransactionCategory("Comida", True)
-    colon = Currency("Colon Costarricense", "CRC", "₡", True)
-    # first_transaction = Transaction(10000.0, "Compras en Walmart", tc_comida, colon, TransactionType.EXPENSE)
     
     #Setup
     if not file_exist(FileNames.CURRENCY):
@@ -28,7 +24,6 @@ def main():
         view = TransactionCategoryView(False)
         view.show()
         
-    # Instantiates the table using the hardcoded default values
     view = TransactionTable()
     view.show()
 
