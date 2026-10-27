@@ -12,7 +12,6 @@ class TransactionView:
     def __init__(self, transaction_type: TransactionType):
         self.transaction_type = transaction_type
         
-        # Configuración dinámica de títulos y botones según el tipo
         if self.transaction_type == TransactionType.EXPENSE:
             self.title = "Expense Manager"
             self.button_text = "Save Expense"
@@ -54,7 +53,6 @@ class TransactionView:
                 
                 case ExpenseKey.SAVE:
                     if self.save_transaction(values):
-                        # Corrección: Texto limpio para el popup de éxito
                         label = "Expense" if self.transaction_type == TransactionType.EXPENSE else "Income"
                         sg.popup(f"{label} saved!")
                         self.window.close()
