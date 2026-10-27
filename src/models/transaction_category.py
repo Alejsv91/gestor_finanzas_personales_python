@@ -17,6 +17,7 @@ class TransactionCategory:
     
     @id.setter
     def id(self, value: int):
+        checkInstance(value, int, "Transaction id instance should be int")
         self._id = value        
     
     @property
