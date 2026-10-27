@@ -3,12 +3,26 @@ from pathlib import Path
 from ..models.currency import Currency
 from ..models.enums import FileNames
 from ..models.transaction_category import TransactionCategory
+from ..models.transaction import Transaction
+from datetime import date, datetime
 import FreeSimpleGUI as sg
+
+def save_transactions(transaction: Transaction) -> None:
+    transactions = read_transactions_data()
+    transactions.append(transaction)
+    try:
+        with open(FileNames.TRANSACTIONS, "w", newline="", encoding="utf-8") as file:
+            writeDataAsDict(file, ["id", "amount", "description",
+                                   "transaction_category_id","transaction_date",
+                                   "currency_code", "transaction_type"], 
+                            transactions)
+            
+    except ValueError as e:
+        sg.popup_error(str(e), title="System Error")
 
 def save_transaction_categories(transaction_categories: list[TransactionCategory]) -> None:
     try: 
         with open(FileNames.TRANSACTION_CATEGORY, "w", newline="", encoding="utf-8") as file:
-            # CORREGIDO: Ahora son 3 columnas independientes en la lista
             writeDataAsDict(file, ["id","name", "enabled"], transaction_categories)
             
         sg.popup("Transaction Category data saved!")
@@ -39,7 +53,29 @@ def writeDataAsDict(file, titleList: list[str], items: list[any]):
     for item in items:
         writer.writerow(item.to_dict())
 
+def read_transactions_data() -> list[Transaction]:
+    if not file_exist(FileNames.TRANSACTIONS):
+        return []
+    
+    transactions: list[Transaction] = []
+    with open(FileNames.TRANSACTIONS, newline="") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+                transactions.append(Transaction(id=int(row["id"]), 
+                                                amount=float(row["amount"]), 
+                                                description=row["description"],
+                                                transaction_category_id=int(row["transaction_category_id"]),
+                                                transaction_date=datetime.strptime(row["transaction_date"], '%Y-%m-%d').date(),
+                                                currency_code=str(row["currency_code"]),
+                                                transaction_type=row["transaction_type"]
+                                                ))
+        
+        return transactions
+
 def read_transaction_category_data() -> list[TransactionCategory]:
+    if not file_exist(FileNames.TRANSACTION_CATEGORY):
+        return []
+    
     transaction_category: list[TransactionCategory] = []
     with open(FileNames.TRANSACTION_CATEGORY, newline="") as file:
         reader = csv.DictReader(file)
@@ -54,6 +90,9 @@ def read_transaction_category_data() -> list[TransactionCategory]:
     
             
 def read_currency_data() -> list[Currency]:
+    if not file_exist(FileNames.CURRENCY):
+        return []
+    
     currencies: list[Currency] = []
     with open(FileNames.CURRENCY, newline="") as file:
         reader = csv.DictReader(file)

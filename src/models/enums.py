@@ -8,3 +8,9 @@ class FileNames(str, Enum):
     CURRENCY = "data/currency.csv",
     TRANSACTIONS = "data/transactions.csv"
     TRANSACTION_CATEGORY = "data/transaction_category.csv"
+    
+class ExpenseKey(Enum):
+    DESCRIPTION = "DESCRIPTION",
+    AMOUNT = "AMOUNT"
+    CATEGORY = "CATEGORY"
+    SAVE = "SAVE"

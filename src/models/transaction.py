@@ -5,39 +5,60 @@ from datetime import date
 from ..utils.validators import checkInstance
 
 class Transaction:
+    _id: int
     _amount: float
     _description: str
-    _category: TransactionCategory
+    _transaction_category_id: int
     _transaction_date: date
-    _currency: Currency
-    _type: TransactionType
+    _currency_code: str
+    _transaction_type: TransactionType
     
-    def __init__(self, amount: float, description: str, category: TransactionCategory, currency: Currency, type: TransactionType):
+    def __init__(self,id: int, amount: float, description: str, transaction_category_id: int, transaction_date: date, currency_code: str, transaction_type: TransactionType):
+        self.id = id
         self.amount = amount
         self.description = description
-        self.category = category
-        self.currency = currency
-        self.type = type
-        pass
-    
+        self.transaction_category_id = transaction_category_id
+        self.transaction_date = transaction_date
+        self.currency_code = currency_code
+        self.transaction_type = transaction_type
+        
+        
     #properties
     @property
-    def type(self) -> TransactionType:
-        return self._type
+    def id(self) -> int:
+        return self._id
     
-    @type.setter
-    def type(self, value):
-        checkInstance(value, TransactionType, "This value must be an instance of TransactionType")
-        self._type = value
+    @id.setter
+    def id(self, value: int):
+        checkInstance(value, int, "Transaction id value should be an instance of int")
+        self._id = value
+    
+    @property
+    def transaction_type(self) -> TransactionType:
+        return self._transaction_type
+    
+    @transaction_type.setter
+    def transaction_type(self, value: TransactionType | str):
+        if isinstance(value, str):
+            if ".EXPENSE" in value:
+                self._transaction_type = TransactionType.EXPENSE
+            elif ".INCOME" in value:
+                self._transaction_type = TransactionType.INCOME
+            else:
+                raise ValueError("The string value should be EXPENSE or INCOME")
+            return
+            
+        checkInstance(value, TransactionType, "Transaction_type should be an instance of TransactionType")
+        self._transaction_type = value
         
     @property
-    def currency(self) -> Currency:
-        return self._currency
+    def currency_code(self) -> str:
+        return self._currency_code
     
-    @currency.setter
-    def currency(self, value: Currency):
-        checkInstance(value, Currency, "This value must be an instance of Currency")
-        self._currency = ValueError
+    @currency_code.setter
+    def currency_code(self, value: str):
+        checkInstance(value, str, "This value must be an instance of int")
+        self._currency_code = value
             
     @property
     def transaction_date(self) -> date:
@@ -49,17 +70,17 @@ class Transaction:
         self._transaction_date = value
     
     @property
-    def category(self):
-        return self._category
+    def transaction_category_id(self) -> int:
+        return self._transaction_category_id
     
-    @category.setter
-    def category(self, value: TransactionCategory):
-        checkInstance(value, TransactionCategory, "This value must be an instance of TransactionCategory")
-        self._category = value
+    @transaction_category_id.setter
+    def transaction_category_id(self, value: int):
+        checkInstance(value, int, "This value must be an instance of int")
+        self._transaction_category_id = value
     
     @property
     def amount(self) -> float:
-        return self.amount
+        return self._amount
     
     @amount.setter
     def amount(self, value: float):
@@ -77,10 +98,11 @@ class Transaction:
         
     def to_dict(self) -> dict:
         return {
+            "id": self.id,
             "amount": self.amount,
-            "category": self.category,
-            "currency" : self.currency,
             "description": self.description,
+            "transaction_category_id" : self.transaction_category_id,
             "transaction_date": self.transaction_date,
-            "type": self.type
+            "currency_code": self.currency_code,
+            "transaction_type": self.transaction_type
         }

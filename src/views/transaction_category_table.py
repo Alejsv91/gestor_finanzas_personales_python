@@ -29,7 +29,6 @@ class TransactionCategoryView:
         self.window = None
 
     def show(self):
-        """Este método abre la ventana y controla el bucle de eventos de forma segura"""
         self.window = sg.Window("Transaction category table", self.layout, font="Courier 12")
         
         while True:
