@@ -10,7 +10,7 @@ class TransactionCategory:
         self.enabled = enabled
         self.id = id
     
-    #property
+    #properties
     @property
     def id(self) -> int:
         return self._id

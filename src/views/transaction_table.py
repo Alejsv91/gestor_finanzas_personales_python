@@ -1,8 +1,8 @@
 import FreeSimpleGUI as sg
 from ..models.transaction import Transaction
-from ..utils.validators import checkInstance
+from ..models.enums import TransactionType, TransactionTableKey
 from ..views.transaction_category_table import TransactionCategoryView
-from ..views.expense import ExpenseView
+from ..views.expense import TransactionView
 from ..utils.csv_utils import read_transactions_data
 
 class TransactionTable:
@@ -13,7 +13,9 @@ class TransactionTable:
         self.transactions = read_transactions_data()
         self.headings = ["id", "amount", "description", "transaction_category_id", 
                          "transaction_date", "currency_code", "transaction_type"]
-        self.layout = [[sg.Button("Add category", key="ADD_CATEGORY"), sg.Button("Add Expense", key="ADD_EXPENSE")],
+        self.layout = [[sg.Button("Add category", key=TransactionTableKey.ADD_CATEGORY), 
+                        sg.Button("Add Expense", key=TransactionTableKey.ADD_EXPENSE),
+                        sg.Button("Add Income", key=TransactionTableKey.ADD_INCOME)],
                        [self.create_table()]]
         
     def show(self):
@@ -25,19 +27,27 @@ class TransactionTable:
                 case sg.WIN_CLOSED:
                     break
                 
-                case "ADD_CATEGORY":
+                case TransactionTableKey.ADD_CATEGORY:
                     view = TransactionCategoryView(True)
                     view.show()
                 
-                case "ADD_EXPENSE":
-                    view = ExpenseView()
-                    view.show()
-                    
-                    self.transactions = read_transactions_data()
-                    self.window['TABLE'].update(values=self.create_table_values())
+                case TransactionTableKey.ADD_EXPENSE:
+                    self.save_transaction(TransactionType.EXPENSE)
                 
+                case TransactionTableKey.ADD_INCOME:
+                    self.save_transaction(TransactionType.INCOME)
+                    
                 case _:
                     print("Unhandle event")
+    
+    def save_transaction(self, transaction_type: TransactionType):
+        view = TransactionView(transaction_type)
+        view.show()
+        
+        self.transactions = read_transactions_data()
+        self.window[TransactionTableKey.TABLE].update(values=self.create_table_values())
+                
+        
     
     def create_table_values(self):
         if len(self.transactions) > 0:
@@ -52,7 +62,7 @@ class TransactionTable:
     def create_table(self):
         return sg.Table(values=self.create_table_values(),
                         headings=self._headings,
-                        key="TABLE",
+                        key=TransactionTableKey.TABLE,
                         auto_size_columns=True,
                         expand_x=True,
                         expand_y=True
