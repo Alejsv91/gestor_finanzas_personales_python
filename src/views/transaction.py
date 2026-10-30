@@ -19,12 +19,6 @@ class TransactionView:
         else:
             self.title = "Income Manager"
             self.button_text = "Save Income"
-        
-        # if not (len(self.transaction_categories) > 0):
-        #     sg.popup("We need to setup transaction categories first")
-        #     transaction_category_view = TransactionCategoryView(False)
-        #     transaction_category_view.show()
-        #     return
             
         self.create_dropdown_data()
         self.create_layout()
@@ -41,8 +35,8 @@ class TransactionView:
         dv=self._id_name_list[0] if self._id_name_list else ''
         
         self.layout = [
-            [sg.Text("Description: "), sg.Input("Description", key=ExpenseKey.DESCRIPTION)],
-            [sg.Text("Amount: "), sg.Input("Amount", key=ExpenseKey.AMOUNT)],
+            [sg.Text("Description: "), sg.Input( key=ExpenseKey.DESCRIPTION)],
+            [sg.Text("Amount: "), sg.Input(key=ExpenseKey.AMOUNT)],
             [[sg.Text("Category: "), sg.DropDown(values=self._id_name_list, key=ExpenseKey.CATEGORY, default_value=dv), sg.Button("Add Category", key=ExpenseKey.ADD_CATEGORY)]],
             [sg.Button(self.button_text, key=ExpenseKey.SAVE)],
         ]

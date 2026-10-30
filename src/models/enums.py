@@ -23,3 +23,6 @@ class TransactionTableKey(Enum):
     TABLE = "TABLE"
     ADD_INCOME = "ADD_INCOME"
     
+class TransactionCategoryTableKey(Enum):
+    CATEGORY_NAME = "CATEGORY_NAME"
+    

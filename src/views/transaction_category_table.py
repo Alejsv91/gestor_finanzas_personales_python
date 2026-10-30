@@ -2,6 +2,7 @@ import FreeSimpleGUI as sg
 from ..models.transaction_category import TransactionCategory
 from ..utils.csv_utils import save_transaction_categories
 from ..utils.csv_utils import read_transaction_category_data
+from ..models.enums import TransactionCategoryTableKey
 
 class TransactionCategoryView:
     _headings: list[str] = ['ID', 'NAME', 'IS ENABLE']
@@ -21,7 +22,7 @@ class TransactionCategoryView:
             
         self.layout = [
             [sg.Text("Category Name:"), 
-             sg.Input("Add the category name", key="CATEGORY_NAME"), 
+             sg.Input( key=TransactionCategoryTableKey.CATEGORY_NAME), 
              sg.Button("Add Category")],                  
             [self.create_table(self.table_values)],
             [sg.Button("Save and Close")]
@@ -79,6 +80,10 @@ class TransactionCategoryView:
         return self._headings
     
     def add_category(self, values):
+        if(values[TransactionCategoryTableKey.CATEGORY_NAME] == ""):
+            sg.popup_error("Category name should not be empty")
+            return
+        
         if len(self.categories) > 0:
             new_id = max(category.id for category in self._categories) + 1
         else:
@@ -86,7 +91,7 @@ class TransactionCategoryView:
         
         category = TransactionCategory(
             new_id,
-            values["CATEGORY_NAME"],
+            values[TransactionCategoryTableKey.CATEGORY_NAME],
             True                    
         )
         
