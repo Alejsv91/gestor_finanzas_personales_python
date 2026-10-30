@@ -38,16 +38,22 @@ class TransactionView:
         self._transaction_categories = value
         
     def create_layout(self):
+        dv=self._id_name_list[0] if self._id_name_list else ''
+        
         self.layout = [
             [sg.Text("Description: "), sg.Input("Description", key=ExpenseKey.DESCRIPTION)],
             [sg.Text("Amount: "), sg.Input("Amount", key=ExpenseKey.AMOUNT)],
-            [[sg.Text("Category: "), sg.DropDown(self._id_name_list, key=ExpenseKey.CATEGORY), sg.Button("Add Category", key=ExpenseKey.ADD_CATEGORY)]],
+            [[sg.Text("Category: "), sg.DropDown(values=self._id_name_list, key=ExpenseKey.CATEGORY, default_value=dv), sg.Button("Add Category", key=ExpenseKey.ADD_CATEGORY)]],
             [sg.Button(self.button_text, key=ExpenseKey.SAVE)],
         ]
     
     def create_dropdown_data(self):
         self.transaction_categories = read_transaction_category_data()
-        self._id_name_list = [f"{c.id} - {c.name}" for c in self._transaction_categories]
+        if len(self.transaction_categories) > 0:
+            self._id_name_list = [f"{c.id} - {c.name}" for c in self._transaction_categories]
+        else:
+            self._id_name_list = []
+        
         
     def show(self):
         self.window = sg.Window(self.title, self.layout, font="Courier 12")
