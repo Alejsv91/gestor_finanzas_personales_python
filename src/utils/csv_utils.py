@@ -83,8 +83,8 @@ def read_transaction_category_data() -> list[TransactionCategory]:
             transaction_category.append(
                 TransactionCategory(id=int(row["id"]),
                                     name=str(row["name"]),
-                                    enabled=bool(row["enabled"]))
-            )
+                                    enabled=row["enabled"] == "True"
+            ))
             
     return transaction_category
     

@@ -1,4 +1,5 @@
 import FreeSimpleGUI as sg
+import sys
 from ..models.transaction import Transaction
 from ..models.enums import TransactionType, TransactionTableKey
 from ..views.transaction_category_table import TransactionCategoryView
@@ -25,6 +26,8 @@ class TransactionTable:
             
             match event:
                 case sg.WIN_CLOSED:
+                    sg.popup_ok("Closing app")
+                    sys.exit()
                     break
                 
                 case TransactionTableKey.ADD_CATEGORY:

@@ -3,6 +3,7 @@ from ..models.transaction import Transaction
 from ..models.enums import TransactionType, ExpenseKey 
 from ..utils.csv_utils import save_transactions, read_transaction_category_data, read_currency_data, read_transactions_data
 from ..models.transaction_category import TransactionCategory
+from ..views.transaction_category_table import TransactionCategoryView
 from datetime import date
 
 class TransactionView:
@@ -18,8 +19,13 @@ class TransactionView:
         else:
             self.title = "Income Manager"
             self.button_text = "Save Income"
+        
+        # if not (len(self.transaction_categories) > 0):
+        #     sg.popup("We need to setup transaction categories first")
+        #     transaction_category_view = TransactionCategoryView(False)
+        #     transaction_category_view.show()
+        #     return
             
-        self.transaction_categories = read_transaction_category_data()
         self.create_dropdown_data()
         self.create_layout()
         
@@ -35,11 +41,12 @@ class TransactionView:
         self.layout = [
             [sg.Text("Description: "), sg.Input("Description", key=ExpenseKey.DESCRIPTION)],
             [sg.Text("Amount: "), sg.Input("Amount", key=ExpenseKey.AMOUNT)],
-            [[sg.Text("Category: "), sg.DropDown(self._id_name_list, key=ExpenseKey.CATEGORY)]],
+            [[sg.Text("Category: "), sg.DropDown(self._id_name_list, key=ExpenseKey.CATEGORY), sg.Button("Add Category", key=ExpenseKey.ADD_CATEGORY)]],
             [sg.Button(self.button_text, key=ExpenseKey.SAVE)],
         ]
     
     def create_dropdown_data(self):
+        self.transaction_categories = read_transaction_category_data()
         self._id_name_list = [f"{c.id} - {c.name}" for c in self._transaction_categories]
         
     def show(self):
@@ -57,6 +64,12 @@ class TransactionView:
                         sg.popup(f"{label} saved!")
                         self.window.close()
                         break
+                
+                case ExpenseKey.ADD_CATEGORY:
+                    transaction_category_view = TransactionCategoryView(True)
+                    transaction_category_view.show()
+                    self.create_dropdown_data()
+                    self.window[ExpenseKey.CATEGORY].update(values=self._id_name_list, value=self._id_name_list[0])
                 
                 case _:
                     print("Unhandled event")
@@ -105,7 +118,7 @@ class TransactionView:
             transaction_category_id=int(transaction_category_id), 
             transaction_date=date.today(),
             currency_code=str(currency_code),
-            transaction_type=self.transaction_type 
+            transaction_type=self.transaction_type
         )
         
         save_transactions(new_transaction)

@@ -5,6 +5,7 @@ class TransactionType(Enum):
     EXPENSE = "EXPENSE"
     
 class FileNames(str, Enum):
+    FOLDER_DATA="data"
     CURRENCY = "data/currency.csv"
     TRANSACTIONS = "data/transactions.csv"
     TRANSACTION_CATEGORY = "data/transaction_category.csv"
@@ -14,6 +15,7 @@ class ExpenseKey(Enum):
     AMOUNT = "AMOUNT"
     CATEGORY = "CATEGORY"
     SAVE = "SAVE"
+    ADD_CATEGORY = "ADD_CATEGORY"
     
 class TransactionTableKey(Enum):
     ADD_CATEGORY = "ADD_CATEGORY"

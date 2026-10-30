@@ -38,10 +38,8 @@ class Transaction:
     @transaction_type.setter
     def transaction_type(self, value: TransactionType | str):
         if isinstance(value, str):
-            if ".EXPENSE" in value:
-                self._transaction_type = TransactionType.EXPENSE
-            elif ".INCOME" in value:
-                self._transaction_type = TransactionType.INCOME
+            if "EXPENSE" in value or "INCOME" in value:
+                self._transaction_type = TransactionType(value)
             else:
                 raise ValueError("The string value should be EXPENSE or INCOME")
             return
@@ -102,5 +100,5 @@ class Transaction:
             "transaction_category_id" : self.transaction_category_id,
             "transaction_date": self.transaction_date,
             "currency_code": self.currency_code,
-            "transaction_type": self.transaction_type
+            "transaction_type": self.transaction_type.value
         }

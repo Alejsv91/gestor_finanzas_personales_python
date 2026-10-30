@@ -41,8 +41,11 @@ class TransactionCategoryView:
                 self.add_category(values)
             
             elif event == "Save and Close":
-                save_transaction_categories(self.categories)
-                break
+                if not(len(self.categories) > 0):
+                    sg.popup_error("Please add at least one category")
+                else:
+                    save_transaction_categories(self.categories)
+                    break
                 
         self.window.close() 
                              

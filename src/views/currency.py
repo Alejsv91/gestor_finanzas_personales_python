@@ -1,6 +1,7 @@
 import FreeSimpleGUI as sg
 from ..models.currency import Currency
 from ..utils.csv_utils import save_currencies
+import sys
 
 
 class CurrencyView:
@@ -26,13 +27,15 @@ class CurrencyView:
         while True:
             event, values = window.read()
             
-            if event == sg.WIN_CLOSED or event == "Cancel":
-                break
+            if event == sg.WIN_CLOSED:
+                sg.popup_ok("Closing app")
+                sys.exit()
             
             if event == "Continue":
                 self.set_base_currency(values)
                 save_currencies(self.default_currencies)
-                window.close()        
+                window.close()   
+                break     
     
     def set_base_currency(self, base_currency_config: dict[str, bool]) -> list[Currency]:
         for currency in self.default_currencies:
@@ -50,7 +53,7 @@ class CurrencyView:
         currencies = self.create_radiobutton(currency_options)
         buttons = [
             [sg.Button("Continue")],
-                   [sg.Button("Cancel")]]    
+            ]    
         
         layout = title + currencies + buttons
         
