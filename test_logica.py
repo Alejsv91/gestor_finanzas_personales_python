@@ -3,7 +3,50 @@ from src.models.transaction_category import TransactionCategory
 from datetime import date
 from src.models.enums import TransactionType
 from src.models.transaction import Transaction
+from unittest.mock import MagicMock
+from src.models.transactions_manager import TransactionManager
 
+# =====================================================================
+# TESTS PARA: validate_inputs
+# =====================================================================
+
+def test_validate_inputs_success(mocker):
+    """Debe retornar el valor absoluto flotante si todos los datos son válidos."""
+    mocker.patch('FreeSimpleGUI.popup_error')
+    
+    result = TransactionManager.validate_inputs("Food", "Groceries", "-150.50")
+    assert result == 150.50
+
+@pytest.mark.parametrize("category, description, amount, expected_msg", [
+    ("", "Desc", "100", "Please select one category"),
+    ("Food", "", "100", "Please add a description"),
+    ("Food", "Desc", "", "Please add an amount"),
+    ("Food", "Desc", "0", "Amount should be greater than 0"),
+    ("Food", "Desc", "not_a_number", "Amount should be a valid number"),
+])
+def test_validate_inputs_failures(mocker, category, description, amount, expected_msg):
+    """Debe mostrar el error correcto en el popup y retornar False ante inputs inválidos."""
+    mock_popup = mocker.patch('FreeSimpleGUI.popup_error')
+    
+    result = TransactionManager.validate_inputs(category, description, amount)
+    
+    assert result is False
+    mock_popup.assert_called_once_with(expected_msg)
+
+
+# =====================================================================
+# TESTS PARA: save_transaction
+# =====================================================================
+
+def test_save_transaction_invalid_inputs(mocker):
+    """Debe retornar False inmediatamente si la validación falla sin abrir ventanas."""
+    mocker.patch("src.models.transactions_manager.sg.popup_error") 
+    
+    result = TransactionManager.save_transaction(TransactionType.EXPENSE, "", "", "")
+    
+    assert result is False
+
+    
 # ==========================================
 # ESCENARIOS POSITIVOS (Casos de éxito)
 # ==========================================
@@ -127,10 +170,8 @@ def test_transaction_to_dict_conversion():
 def test_setters_raise_error_on_invalid_types():
     """Prueba que los setters disparen fallos al recibir datos erróneos."""
     hoy = date.today()
-    # Instanciamos un objeto base válido para mutar sus propiedades
     tx = Transaction(1, 50.0, "Test", 1, hoy, "USD", TransactionType.EXPENSE)
     
-    # Cada una de estas asignaciones debería levantar un ValueError según tu validador
     with pytest.raises(ValueError):
         tx.id = "no-es-un-int"
         
