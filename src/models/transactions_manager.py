@@ -51,7 +51,7 @@ class TransactionManager:
             id=TransactionManager.get_new_transaction_id(), 
             amount=amount_value, 
             description=str(description),
-            transaction_category_id=int(transaction_category_id), 
+            transaction_category_id=transaction_category_id, 
             transaction_date=date.today(),
             currency_code=str(currency_code),
             transaction_type=transaction_type
@@ -62,7 +62,7 @@ class TransactionManager:
     
     @staticmethod
     def get_category_id( value: str) -> int:
-        return value.split(" - ")[0]
+        return int(value.split(" - ")[0])
         
     @staticmethod
     def get_currency_code() -> str:

@@ -1,4 +1,4 @@
-from ..utils.validators import checkInstance
+from ..utils.validators import check_instance
 
 class Currency:
     _name: str
@@ -18,7 +18,7 @@ class Currency:
     
     @name.setter
     def name(self, value: str):
-        checkInstance(value, str, "This value should be a string")
+        check_instance(value, str, "This value should be a string")
         self._name = value
     
     @property
@@ -27,7 +27,7 @@ class Currency:
     
     @code.setter
     def code(self, value: str):
-        checkInstance(value, str, "This value should be a string")
+        check_instance(value, str, "This value should be a string")
         self._code = value
     
     @property
@@ -36,7 +36,7 @@ class Currency:
     
     @symbol.setter
     def symbol(self, value: str):
-        checkInstance(value, str, "This value should be a string")
+        check_instance(value, str, "This value should be a string")
         self._symbol = value
         
     @property
@@ -45,7 +45,7 @@ class Currency:
     
     @is_base.setter
     def is_base(self, value: bool):
-        checkInstance(value, bool, "This value should be a bool")
+        check_instance(value, bool, "This value should be a bool")
         self._is_base = value
         
     def to_dict(self) -> dict:

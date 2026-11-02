@@ -1,4 +1,4 @@
-def checkInstance(value: any, expectedType: any, errorDescription: str)-> bool:  
+def check_instance(value: any, expectedType: any, errorDescription: str)-> bool:  
         try:
             if not(isinstance(value, expectedType)):
                 raise ValueError(errorDescription)

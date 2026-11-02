@@ -1,4 +1,4 @@
-from ..utils.validators import checkInstance
+from ..utils.validators import check_instance
 
 class TransactionCategory:
     _name: str
@@ -17,7 +17,7 @@ class TransactionCategory:
     
     @id.setter
     def id(self, value: int):
-        checkInstance(value, int, "Transaction id instance should be int")
+        check_instance(value, int, "Transaction id instance should be int")
         self._id = value        
     
     @property
@@ -26,7 +26,7 @@ class TransactionCategory:
     
     @name.setter
     def name(self, value: str):
-        checkInstance(value, str, "The name of the transaction summary type is string")
+        check_instance(value, str, "The name of the transaction summary type is string")
         self._name = value
         
     @property
@@ -35,7 +35,7 @@ class TransactionCategory:
     
     @enabled.setter
     def enabled(self, value):
-        checkInstance(value, bool, "enabled value should be bool type")
+        check_instance(value, bool, "enabled value should be bool type")
         self._enabled = value
         
         

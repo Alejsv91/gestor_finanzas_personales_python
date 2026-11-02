@@ -109,13 +109,13 @@ def test_enabled_setter_raises_error_on_invalid_type():
 
 def test_transaction_initialization_success():
     """Valida la creación exitosa con tipos correctos."""
-    hoy = date.today()
+    today = date.today()
     tx = Transaction(
         id=1,
         amount=1500.50,
         description="Pago de almuerzo",
         transaction_category_id=2,
-        transaction_date=hoy,
+        transaction_date=today,
         currency_code="CRC",
         transaction_type=TransactionType.EXPENSE
     )
@@ -124,14 +124,14 @@ def test_transaction_initialization_success():
     assert tx.amount == 1500.50
     assert tx.description == "Pago de almuerzo"
     assert tx.transaction_category_id == 2
-    assert tx.transaction_date == hoy
+    assert tx.transaction_date == today
     assert tx.currency_code == "CRC"
     assert tx.transaction_type == TransactionType.EXPENSE
 
 def test_transaction_type_setter_with_valid_strings():
     """Prueba que el setter maneje cadenas con formato largo como '.EXPENSE' o '.INCOME'."""
-    hoy = date.today()
-    tx = Transaction(1, 50.0, "Test", 1, hoy, "USD", TransactionType.EXPENSE)
+    today = date.today()
+    tx = Transaction(1, 50.0, "Test", 1, today, "USD", TransactionType.EXPENSE)
     
     tx.transaction_type = "EXPENSE"
     assert tx.transaction_type == TransactionType.EXPENSE
@@ -141,15 +141,15 @@ def test_transaction_type_setter_with_valid_strings():
 
 def test_transaction_to_dict_conversion():
     """Verifica que to_dict exporte correctamente todos los campos."""
-    hoy = date.today()
-    tx = Transaction(10, 350.0, "Servicios", 4, hoy, "USD", TransactionType.EXPENSE)
+    today = date.today()
+    tx = Transaction(10, 350.0, "Servicios", 4, today, "USD", TransactionType.EXPENSE)
     
     expected = {
         "id": 10,
         "amount": 350.0,
         "description": "Servicios",
         "transaction_category_id": 4,
-        "transaction_date": hoy,
+        "transaction_date": today,
         "currency_code": "USD",
         "transaction_type": "EXPENSE"
     }
@@ -169,8 +169,8 @@ def test_transaction_to_dict_conversion():
 
 def test_setters_raise_error_on_invalid_types():
     """Prueba que los setters disparen fallos al recibir datos erróneos."""
-    hoy = date.today()
-    tx = Transaction(1, 50.0, "Test", 1, hoy, "USD", TransactionType.EXPENSE)
+    today = date.today()
+    tx = Transaction(1, 50.0, "Test", 1, today, "USD", TransactionType.EXPENSE)
     
     with pytest.raises(ValueError):
         tx.id = "no-es-un-int"

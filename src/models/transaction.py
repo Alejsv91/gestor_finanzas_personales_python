@@ -1,6 +1,6 @@
 from .enums import TransactionType
 from datetime import date
-from ..utils.validators import checkInstance
+from ..utils.validators import check_instance
 
 class Transaction:
     _id: int
@@ -28,7 +28,7 @@ class Transaction:
     
     @id.setter
     def id(self, value: int):
-        checkInstance(value, int, "Transaction id value should be an instance of int")
+        check_instance(value, int, "Transaction id value should be an instance of int")
         self._id = value
     
     @property
@@ -44,7 +44,7 @@ class Transaction:
                 raise ValueError("The string value should be EXPENSE or INCOME")
             return
             
-        checkInstance(value, TransactionType, "Transaction_type should be an instance of TransactionType")
+        check_instance(value, TransactionType, "Transaction_type should be an instance of TransactionType")
         self._transaction_type = value
         
     @property
@@ -53,7 +53,7 @@ class Transaction:
     
     @currency_code.setter
     def currency_code(self, value: str):
-        checkInstance(value, str, "This value must be an instance of int")
+        check_instance(value, str, "This value must be an instance of int")
         self._currency_code = value
             
     @property
@@ -62,7 +62,7 @@ class Transaction:
     
     @transaction_date.setter 
     def transaction_date(self, value: date):
-        checkInstance(value, date, "This value must be an instance of date")
+        check_instance(value, date, "This value must be an instance of date")
         self._transaction_date = value
     
     @property
@@ -71,7 +71,7 @@ class Transaction:
     
     @transaction_category_id.setter
     def transaction_category_id(self, value: int):
-        checkInstance(value, int, "This value must be an instance of int")
+        check_instance(value, int, "This value must be an instance of int")
         self._transaction_category_id = value
     
     @property
@@ -80,7 +80,7 @@ class Transaction:
     
     @amount.setter
     def amount(self, value: float):
-        checkInstance(value, float, "This value must be an instance of float")
+        check_instance(value, float, "This value must be an instance of float")
         self._amount = value
         
     @property
@@ -89,7 +89,7 @@ class Transaction:
     
     @description.setter
     def description(self, value: str):
-        checkInstance(value, str, "This value must be an instace of str")
+        check_instance(value, str, "This value must be an instace of str")
         self._description = value
         
     def to_dict(self) -> dict:

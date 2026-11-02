@@ -12,7 +12,7 @@ def save_transactions_to_csv(transaction: Transaction) -> None:
     transactions.append(transaction)
     try:
         with open(FileNames.TRANSACTIONS, "w", newline="", encoding="utf-8") as file:
-            writeDataAsDict(file, ["id", "amount", "description",
+            write_data_as_dict(file, ["id", "amount", "description",
                                    "transaction_category_id","transaction_date",
                                    "currency_code", "transaction_type"], 
                             transactions)
@@ -23,7 +23,7 @@ def save_transactions_to_csv(transaction: Transaction) -> None:
 def save_transaction_categories(transaction_categories: list[TransactionCategory]) -> None:
     try: 
         with open(FileNames.TRANSACTION_CATEGORY, "w", newline="", encoding="utf-8") as file:
-            writeDataAsDict(file, ["id","name", "enabled"], transaction_categories)
+            write_data_as_dict(file, ["id","name", "enabled"], transaction_categories)
             
         sg.popup("Transaction Category data saved!")
         
@@ -42,7 +42,7 @@ def save_currencies(currencies: list[Currency]) -> None:
         for currency in currencies:
             writer.writerow(currency.to_dict())
             
-def writeDataAsDict(file, titleList: list[str], items: list[any]):
+def write_data_as_dict(file, titleList: list[str], items: list[any]):
     writer = csv.DictWriter(
         file,
         fieldnames=titleList
@@ -58,7 +58,7 @@ def read_transactions_data() -> list[Transaction]:
         return []
     
     transactions: list[Transaction] = []
-    with open(FileNames.TRANSACTIONS, newline="") as file:
+    with open(FileNames.TRANSACTIONS, newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
         for row in reader:
                 transactions.append(Transaction(id=int(row["id"]), 
@@ -77,7 +77,7 @@ def read_transaction_category_data() -> list[TransactionCategory]:
         return []
     
     transaction_category: list[TransactionCategory] = []
-    with open(FileNames.TRANSACTION_CATEGORY, newline="") as file:
+    with open(FileNames.TRANSACTION_CATEGORY, newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
         for row in reader:
             transaction_category.append(
@@ -94,7 +94,7 @@ def read_currency_data() -> list[Currency]:
         return []
     
     currencies: list[Currency] = []
-    with open(FileNames.CURRENCY, newline="") as file:
+    with open(FileNames.CURRENCY, newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
         for row in reader:
             currencies.append(
