@@ -7,7 +7,7 @@ from ..models.transaction import Transaction
 from datetime import date, datetime
 import FreeSimpleGUI as sg
 
-def save_transactions(transaction: Transaction) -> None:
+def save_transactions_to_csv(transaction: Transaction) -> None:
     transactions = read_transactions_data()
     transactions.append(transaction)
     try:

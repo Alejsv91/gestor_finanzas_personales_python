@@ -1,10 +1,10 @@
 import FreeSimpleGUI as sg
 from ..models.transaction import Transaction
 from ..models.enums import TransactionType, ExpenseKey 
-from ..utils.csv_utils import save_transactions, read_transaction_category_data, read_currency_data, read_transactions_data
+from ..utils.csv_utils import  read_transaction_category_data
 from ..models.transaction_category import TransactionCategory
 from ..views.transaction_category_table import TransactionCategoryView
-from datetime import date
+from ..models.transactions_manager import TransactionManager
 
 class TransactionView:
     _transaction_categories: list[TransactionCategory] = []
@@ -73,53 +73,10 @@ class TransactionView:
                 
                 case _:
                     print("Unhandled event")
-                    
-    def get_category_id(self, value: str) -> int:
-        return value.split(" - ")[0]
-    
-    def get_currency_code(self) -> str:
-        currencies = read_currency_data()
-        base = next(filter(lambda c: c.is_base is True, currencies), None)
-        return base.code
     
     def save_transaction(self, values) -> bool:
-        transactions: list[Transaction] = read_transactions_data()
-        id = max(t.id for t in transactions) + 1 if len(transactions) > 0 else 0
         
-        if values[ExpenseKey.CATEGORY] == "":
-            sg.popup_error("You should select a category")
-            return False
+        return TransactionManager.save_transaction(self.transaction_type, values[ExpenseKey.CATEGORY], 
+                                            values[ExpenseKey.DESCRIPTION], values[ExpenseKey.AMOUNT])
         
-        if values[ExpenseKey.DESCRIPTION].strip() == "":
-            sg.popup_error("You should add a description")
-            return False
         
-        try:
-            amount_value = abs(float(values[ExpenseKey.AMOUNT]))
-            if amount_value == 0:
-                sg.popup_error("Amount should be greater than 0")
-                return False
-        except:
-            sg.popup_error("Amount should be a valid number")
-            return False
-        
-        if self.transaction_type == TransactionType.EXPENSE:
-            amount_value = -amount_value  
-        else:
-            amount_value = amount_value   
-        
-        transaction_category_id = self.get_category_id(values[ExpenseKey.CATEGORY])
-        currency_code = self.get_currency_code()
-        
-        new_transaction: Transaction = Transaction(
-            id=id, 
-            amount=amount_value, 
-            description=str(values[ExpenseKey.DESCRIPTION]),
-            transaction_category_id=int(transaction_category_id), 
-            transaction_date=date.today(),
-            currency_code=str(currency_code),
-            transaction_type=self.transaction_type
-        )
-        
-        save_transactions(new_transaction)
-        return True
