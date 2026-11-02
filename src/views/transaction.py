@@ -1,5 +1,4 @@
 import FreeSimpleGUI as sg
-from ..models.transaction import Transaction
 from ..models.enums import TransactionType, ExpenseKey 
 from ..utils.csv_utils import  read_transaction_category_data
 from ..models.transaction_category import TransactionCategory

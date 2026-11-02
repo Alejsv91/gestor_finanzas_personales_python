@@ -4,7 +4,7 @@ from ..models.currency import Currency
 from ..models.enums import FileNames
 from ..models.transaction_category import TransactionCategory
 from ..models.transaction import Transaction
-from datetime import date, datetime
+from datetime import datetime
 import FreeSimpleGUI as sg
 
 def save_transactions_to_csv(transaction: Transaction) -> None:

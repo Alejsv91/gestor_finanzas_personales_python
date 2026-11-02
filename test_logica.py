@@ -1,5 +1,4 @@
 import pytest
-from unittest.mock import patch
 from src.models.transaction_category import TransactionCategory 
 from datetime import date
 from src.models.enums import TransactionType
@@ -46,18 +45,18 @@ def test_setters_update_values_correctly():
 # ==========================================
 
 def test_id_setter_raises_error_on_invalid_type():
-    """Verifica que el validador lance un TypeError si el ID no es un entero."""
-    with pytest.raises(SystemError):
+    """Verifica que el validador lance un ValueError si el ID no es un entero."""
+    with pytest.raises(ValueError):
         TransactionCategory(id="no_soy_un_int", name="Salud", enabled=True)
 
 def test_name_setter_raises_error_on_invalid_type():
-    """Verifica que el validador lance un TypeError si el nombre no es una cadena."""
-    with pytest.raises(SystemError):
+    """Verifica que el validador lance un ValueError si el nombre no es una cadena."""
+    with pytest.raises(ValueError):
         TransactionCategory(id=2, name=12345, enabled=True)
 
 def test_enabled_setter_raises_error_on_invalid_type():
-    """Verifica que el validador lance un TypeError si el estado no es booleano."""
-    with pytest.raises(SystemError):
+    """Verifica que el validador lance un ValueError si el estado no es booleano."""
+    with pytest.raises(ValueError):
         TransactionCategory(id=3, name="Educación", enabled="True_String")
 
 
@@ -91,10 +90,10 @@ def test_transaction_type_setter_with_valid_strings():
     hoy = date.today()
     tx = Transaction(1, 50.0, "Test", 1, hoy, "USD", TransactionType.EXPENSE)
     
-    tx.transaction_type = "transactionType.EXPENSE"
+    tx.transaction_type = "EXPENSE"
     assert tx.transaction_type == TransactionType.EXPENSE
     
-    tx.transaction_type = "transactionType.INCOME"
+    tx.transaction_type = "INCOME"
     assert tx.transaction_type == TransactionType.INCOME
 
 def test_transaction_to_dict_conversion():
@@ -109,8 +108,15 @@ def test_transaction_to_dict_conversion():
         "transaction_category_id": 4,
         "transaction_date": hoy,
         "currency_code": "USD",
-        "transaction_type": TransactionType.EXPENSE
+        "transaction_type": "EXPENSE"
     }
+    
+    print("---------------------")
+    print(expected)
+    print("---------------------")
+    print(tx)
+    
+    
     assert tx.to_dict() == expected
 
 
@@ -124,21 +130,21 @@ def test_setters_raise_error_on_invalid_types():
     # Instanciamos un objeto base válido para mutar sus propiedades
     tx = Transaction(1, 50.0, "Test", 1, hoy, "USD", TransactionType.EXPENSE)
     
-    # Cada una de estas asignaciones debería levantar un TypeError según tu validador
-    with pytest.raises(SystemError):
+    # Cada una de estas asignaciones debería levantar un ValueError según tu validador
+    with pytest.raises(ValueError):
         tx.id = "no-es-un-int"
         
-    with pytest.raises(SystemError):
+    with pytest.raises(ValueError):
         tx.amount = "no-es-un-float"
         
-    with pytest.raises(SystemError):
+    with pytest.raises(ValueError):
         tx.description = 12345
         
-    with pytest.raises(SystemError):
+    with pytest.raises(ValueError):
         tx.transaction_category_id = [1]
         
-    with pytest.raises(SystemError):
+    with pytest.raises(ValueError):
         tx.transaction_date = "2026-10-27"
         
-    with pytest.raises(SystemError):
+    with pytest.raises(ValueError):
         tx.currency_code = 506

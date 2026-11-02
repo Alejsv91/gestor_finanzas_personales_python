@@ -4,4 +4,4 @@ def checkInstance(value: any, expectedType: any, errorDescription: str)-> bool:
                 raise ValueError(errorDescription)
             
         except (ValueError, TypeError) as e:
-            raise SystemError(f"System error when trying to save amount data. Error description: {e}")
+            raise ValueError(f"System error when trying to save amount data. Error description: {e}")
