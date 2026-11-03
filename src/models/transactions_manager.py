@@ -1,4 +1,4 @@
-from ..models.enums import TransactionType, FileNames
+from ..models.enums import TransactionType
 from ..utils.csv_utils import read_currency_data, save_transactions_to_csv, read_transactions_data
 from ..models.transaction import Transaction
 from datetime import date
