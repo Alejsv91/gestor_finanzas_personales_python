@@ -36,6 +36,8 @@ class TransactionCategoryView:
             event, values = self.window.read()
             
             if event == sg.WIN_CLOSED:
+                if self.categories == []:
+                    sg.popup_error("Warning: You are closing the category creation screen without adding any categories. You must add at least one category to save future transactions.")
                 break
             
             if event == "Add Category":

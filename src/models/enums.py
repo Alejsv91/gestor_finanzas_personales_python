@@ -16,6 +16,7 @@ class ExpenseKey(Enum):
     CATEGORY = "CATEGORY"
     SAVE = "SAVE"
     ADD_CATEGORY = "ADD_CATEGORY"
+    NOT_CATEGORIES_MESSAGE = "NOT_CATEGORIES_MESSAGE"
     
 class TransactionTableKey(Enum):
     ADD_CATEGORY = "ADD_CATEGORY"
