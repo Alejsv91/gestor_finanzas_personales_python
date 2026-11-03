@@ -2,30 +2,44 @@ from ..models.enums import TransactionType
 from ..utils.csv_utils import read_currency_data, save_transactions_to_csv, read_transactions_data
 from ..models.transaction import Transaction
 from datetime import date
-import FreeSimpleGUI as sg
 
 class TransactionManager:
+
     @staticmethod
-    def validate_inputs(category: str, description: str, amount: str) -> bool | float:
+    def validate_inputs(category: str, description: str, amount: str) -> {"error", "message"}:
+        status = {
+            "error": False,
+            "message": ""
+        }
+        
         if category == "":
-            sg.popup_error("Please select one category")
-            return False
+            status["error"] = True
+            status["message"] ="Please select one category"
+            return status
+        
         if description == "":
-            sg.popup_error("Please add a description")
-            return False
+            status["error"] = True
+            status["message"] = "Please add a description"
+            return status
+        
         if amount == "":
-            sg.popup_error("Please add an amount")
-            return False
+            status["error"] = True
+            status["message"] = "Please add an amount"
+            return status
+        
         try:
             amount_value = abs(float(amount))
             if amount_value == 0:
-                sg.popup_error("Amount should be greater than 0")
-                return False
+                status["error"] = True
+                status["message"] = "Amount should be greater than 0"
+                return status
+            
         except:
-            sg.popup_error("Amount should be a valid number")
-            return False
+            status["error"] = True
+            status["message"] = "Amount should be a valid number"
+            return status
         
-        return amount_value
+        return status
             
     @staticmethod
     def get_new_transaction_id():
@@ -36,8 +50,7 @@ class TransactionManager:
     def save_transaction( transaction_type: TransactionType, category: str,
                          description: str, amount: str) -> bool:
         
-        if (amount_value := TransactionManager.validate_inputs(category, description,
-                                                         amount)) is False: return False
+        amount_value = float(amount)
         
         if transaction_type == TransactionType.EXPENSE:
             amount_value = -amount_value  
