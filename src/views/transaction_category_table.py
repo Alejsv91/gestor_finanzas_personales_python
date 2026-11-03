@@ -3,6 +3,7 @@ from ..models.transaction_category import TransactionCategory
 from ..utils.csv_utils import save_transaction_categories
 from ..utils.csv_utils import read_transaction_category_data
 from ..models.enums import TransactionCategoryTableKey
+from ..models.transaction_category_manager import TransactionCategoryManager
 
 class TransactionCategoryView:
     _headings: list[str] = ['ID', 'NAME', 'IS ENABLE']
@@ -13,10 +14,7 @@ class TransactionCategoryView:
         
         if load_transactions_category:
             self.categories = read_transaction_category_data()
-            self.table_values = [
-                [obj.id, obj.name, obj.enabled]
-                for obj in self.categories
-            ]
+            self.table_values = TransactionCategoryManager.create_table_values(self.categories)
         else:
             self.table_values = []
             
@@ -58,24 +56,7 @@ class TransactionCategoryView:
     
     @categories.setter
     def categories(self, value: TransactionCategory):
-        if isinstance(value, list):
-            for item in value:
-                if any(category.name.lower() == item.name.lower() for category in self._categories):
-                    raise ValueError(f"The transaction '{item.name}' already exist")
-                
-                self._categories.append(item)
-                
-        elif isinstance(value, TransactionCategory):    
-            exist = any(
-                category.name.lower() == value.name.lower()
-                for category in self._categories
-            )
-        
-            if exist:
-                print(f"The transaction '{value.name}' exist")
-                raise ValueError(f"The transaction '{value.name}' already exists")
-                    
-            self._categories.append(value)
+        self._categories = TransactionCategoryManager.check_and_new_transaction(value, self._categories)
                 
     @property
     def headings(self):
