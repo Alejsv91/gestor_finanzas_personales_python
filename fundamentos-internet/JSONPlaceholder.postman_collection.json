@@ -1,0 +1,94 @@
+{
+  "info": {
+    "_postman_id": "22cb6b67-a79f-46c3-8f28-1e9314c627f5",
+    "name": "JSONPlaceholder",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "4292380"
+  },
+  "item": [
+    {
+      "name": "getPosts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200 and body check\", () => {",
+              "    pm.response.to.have.status(200);",
+              "    pm.expect(response).to.have.all.keys(\"userId\", \"id\", \"title\", \"body\");",
+              "     pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{URL}}posts/1",
+          "host": [
+            "{{URL}}posts"
+          ],
+          "path": [
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "postPosts",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\":\"Title test\",\n    \"body\": \"Body Test\",\n    \"userId\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}posts",
+          "host": [
+            "{{URL}}posts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "putPosts",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\":101,\n    \"title\":\"Title update test\",\n    \"body\": \"Body update test\",\n    \"userId\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}posts/101",
+          "host": [
+            "{{URL}}posts"
+          ],
+          "path": [
+            "101"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
