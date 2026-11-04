@@ -63,34 +63,25 @@ class TransactionCategoryView:
         return self._headings
     
     def add_category(self, values):
-        if(values[TransactionCategoryTableKey.CATEGORY_NAME] == ""):
-            sg.popup_error("Category name should not be empty")
-            return
+        try: 
+            new_category_name = values[TransactionCategoryTableKey.CATEGORY_NAME]
+            
+            validation_status = TransactionCategoryManager.validate_inputs(new_category_name)
+            
+            if(validation_status["error"]):
+                sg.popup_error(validation_status["message"])
+                return
+            
+            tc = TransactionCategoryManager.create_transaction_category(self.categories, new_category_name)
         
-        if len(self.categories) > 0:
-            new_id = max(category.id for category in self._categories) + 1
-        else:
-            new_id = 0
-        
-        category = TransactionCategory(
-            new_id,
-            values[TransactionCategoryTableKey.CATEGORY_NAME],
-            True                    
-        )
-        
-        try:
-            self.categories = category
+            self.categories = tc
+            
+            self.window["TABLE"].update(values=TransactionCategoryManager.create_table_values(self.categories))
+            
         except ValueError as e:
             sg.popup_error(str(e), title="Error")
             return 
-                
-        table_data = [
-            [c.id, c.name, c.enabled]
-            for c in self.categories
-        ]
-                
-        self.window["TABLE"].update(values=table_data)
-        
+                        
     def create_table(self, values: list[TransactionCategory] | None):
         return sg.Table(
             values=values,
