@@ -28,7 +28,7 @@ class TransactionManager:
             return status
         
         try:
-            amount_value = abs(float(amount.strip))
+            amount_value = abs(float(amount.strip()))
             if amount_value == 0:
                 status["error"] = True
                 status["message"] = "Amount should be greater than 0"

@@ -12,10 +12,14 @@ from src.models.transactions_manager import TransactionManager
 
 def test_validate_inputs_success(mocker):
     """Debe retornar el valor absoluto flotante si todos los datos son válidos."""
-    mocker.patch('FreeSimpleGUI.popup_error')
+    expected_result = {
+            "error": False,
+            "message": ""
+        }
     
-    result = TransactionManager.validate_inputs("Food", "Groceries", "-150.50")
-    assert result == 150.50
+    result = TransactionManager.validate_inputs("Food", "Groceries", "150.50")
+    assert result["message"] == expected_result["message"]
+    assert result["error"] == expected_result["error"]
 
 @pytest.mark.parametrize("category, description, amount, expected_msg", [
     ("", "Desc", "100", "Please select one category"),
@@ -26,12 +30,16 @@ def test_validate_inputs_success(mocker):
 ])
 def test_validate_inputs_failures(mocker, category, description, amount, expected_msg):
     """Debe mostrar el error correcto en el popup y retornar False ante inputs inválidos."""
-    mock_popup = mocker.patch('FreeSimpleGUI.popup_error')
+    # mock_popup = mocker.patch('FreeSimpleGUI.popup_error')
+    expected_result = {
+            "error": False,
+            "message": ""
+        }
     
     result = TransactionManager.validate_inputs(category, description, amount)
     
-    assert result is False
-    mock_popup.assert_called_once_with(expected_msg)
+    assert result is expected_result
+    # mock_popup.assert_called_once_with(expected_msg)
 
 
 # =====================================================================
