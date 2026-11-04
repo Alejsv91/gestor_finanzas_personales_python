@@ -12,23 +12,23 @@ class TransactionManager:
             "message": ""
         }
         
-        if category == "":
+        if category.strip() == "":
             status["error"] = True
             status["message"] ="Please select one category"
             return status
         
-        if description == "":
+        if description.strip() == "":
             status["error"] = True
             status["message"] = "Please add a description"
             return status
         
-        if amount == "":
+        if amount.strip() == "":
             status["error"] = True
             status["message"] = "Please add an amount"
             return status
         
         try:
-            amount_value = abs(float(amount))
+            amount_value = abs(float(amount.strip))
             if amount_value == 0:
                 status["error"] = True
                 status["message"] = "Amount should be greater than 0"
@@ -50,7 +50,7 @@ class TransactionManager:
     def save_transaction( transaction_type: TransactionType, category: str,
                          description: str, amount: str) -> bool:
         
-        amount_value = float(amount)
+        amount_value = float(amount.strip())
         
         if transaction_type == TransactionType.EXPENSE:
             amount_value = -amount_value  
