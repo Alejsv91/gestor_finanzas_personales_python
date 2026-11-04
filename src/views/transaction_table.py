@@ -5,6 +5,7 @@ from ..models.enums import TransactionType, TransactionTableKey
 from ..views.transaction_category_table import TransactionCategoryView
 from .transaction import TransactionView
 from ..utils.csv_utils import read_transactions_data
+from ..models.transaction_category_manager import TransactionCategoryManager
 
 class TransactionTable:
     _headings: list[str]
@@ -12,8 +13,8 @@ class TransactionTable:
     
     def __init__(self):
         self.transactions = read_transactions_data()
-        self.headings = ["id", "amount", "description", "transaction_category_id", 
-                         "transaction_date", "currency_code", "transaction_type"]
+        self.headings = ["Id", "Amount", "Description", "Category", 
+                         "Date", "Currency", "Transaction Type"]
         self.layout = [[sg.Button("Add category", key=TransactionTableKey.ADD_CATEGORY), 
                         sg.Button("Add Expense", key=TransactionTableKey.ADD_EXPENSE),
                         sg.Button("Add Income", key=TransactionTableKey.ADD_INCOME)],
@@ -55,8 +56,8 @@ class TransactionTable:
     def create_table_values(self):
         if len(self.transactions) > 0:
             return [
-                [t.id, t.amount, t.description, t.transaction_category_id, t.transaction_date, 
-                t.currency_code, t.transaction_type.value]
+                [t.id, t.amount, t.description, TransactionCategoryManager.get_transaction_category_name_by_id(t.transaction_category_id)
+                 , t.transaction_date, t.currency_code, t.transaction_type.value]
                 for t in self.transactions]        
         else:
             return []
