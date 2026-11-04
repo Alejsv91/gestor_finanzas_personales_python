@@ -1,10 +1,9 @@
 from ..models.enums import TransactionType
-from ..utils.csv_utils import read_currency_data, save_transactions_to_csv, read_transactions_data
+from ..utils.csv_utils import read_currency_data, save_transactions_to_csv, read_transactions_data, read_transaction_category_data
 from ..models.transaction import Transaction
 from datetime import date
 
 class TransactionManager:
-
     @staticmethod
     def validate_inputs(category: str, description: str, amount: str) -> {"error", "message"}:
         status = {

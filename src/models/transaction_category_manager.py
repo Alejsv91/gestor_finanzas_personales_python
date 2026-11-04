@@ -1,6 +1,21 @@
 from ..models.transaction_category import TransactionCategory
+from ..utils.csv_utils import read_transaction_category_data
 
 class TransactionCategoryManager:
+    @staticmethod
+    def get_transaction_category_name_by_id(id: int | str) -> str:
+        error_message = "Transaction Category Not Found"
+        
+        try:
+            category_id = int(id)
+            
+            return next(
+                (cat.name for cat in read_transaction_category_data() if cat.id == category_id), 
+                error_message
+            )
+        except (ValueError, TypeError):
+            return error_message
+
     
     @staticmethod
     def create_transaction_category(categories: list[TransactionCategory], new_category_name: str) -> TransactionCategory:
