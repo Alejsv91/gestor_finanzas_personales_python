@@ -11,7 +11,6 @@ class CurrencyView:
         self.default_currencies = [
             Currency("Colon Costarricense", "CRC", "₡", True),
             Currency("Dolar United States Of America", "USD", "$", False)]
-        self.window = self.create_layout()
         
     @property
     def default_currencies(self) -> list[Currency]:
@@ -41,16 +40,13 @@ class CurrencyView:
         for currency in self.default_currencies:
             currency.is_base = base_currency_config[currency.code]
         
-    def create_layout(self):
-        currency_options = [
-            Currency("Colon Costarricense", "CRC", "₡", True),
-            Currency("Dolar United States Of America", "USD", "$", False)]
+    def create_layout(self): 
         
         title =  [
             [sg.Text("Select the base currency:")]
         ]
         
-        currencies = self.create_radiobutton(currency_options)
+        currencies = self.create_radiobutton(self._default_currencies)
         buttons = [
             [sg.Button("Continue")],
             ]    
@@ -63,6 +59,6 @@ class CurrencyView:
         rb = []
         
         for curr in currency_options:
-            rb.append([sg.Radio(curr.name, "Currency", default=True, key=curr.code)])
+            rb.append([sg.Radio(curr.name, "Currency", default=curr.is_base, key=curr.code)])
             
         return rb

@@ -1,5 +1,5 @@
 from src.views.transaction_table import TransactionTable
-from src.models.enums import *
+from src.models.enums import FileNames
 from src.utils.csv_utils import file_exist
 from src.views.currency import CurrencyView
 from src.views.transaction_category_table import TransactionCategoryView
