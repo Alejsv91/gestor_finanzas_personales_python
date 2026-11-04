@@ -47,15 +47,24 @@ class TransactionManager:
         return max(t.id for t in transactions) + 1 if len(transactions) > 0 else 0
     
     @staticmethod
-    def save_transaction( transaction_type: TransactionType, category: str,
-                         description: str, amount: str) -> bool:
+    def save_transaction(transaction_type: TransactionType, category: str,
+                        description: str, amount: str) -> bool:
         
-        amount_value = float(amount.strip())
+        if transaction_type is None or not isinstance(transaction_type, TransactionType):
+            return False
         
+        if category.strip() == "" or description.strip() == "" or amount.strip() == "":
+            return False
+        
+        try:
+            amount_value = float(amount.strip())
+        except ValueError:
+            return False 
+            
         if transaction_type == TransactionType.EXPENSE:
-            amount_value = -amount_value  
+            amount_value = -abs(amount_value)  
         else:
-            amount_value = amount_value
+            amount_value = abs(amount_value)   
         
         transaction_category_id = TransactionManager.get_category_id(category)
         currency_code = TransactionManager.get_currency_code()
@@ -63,7 +72,7 @@ class TransactionManager:
         new_transaction: Transaction = Transaction(
             id=TransactionManager.get_new_transaction_id(), 
             amount=amount_value, 
-            description=str(description),
+            description=str(description).strip(),
             transaction_category_id=transaction_category_id, 
             transaction_date=date.today(),
             currency_code=str(currency_code),
@@ -72,6 +81,7 @@ class TransactionManager:
         
         save_transactions_to_csv(new_transaction)
         return True
+
     
     @staticmethod
     def get_category_id( value: str) -> int:

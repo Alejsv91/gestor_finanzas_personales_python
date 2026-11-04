@@ -3,7 +3,6 @@ from src.models.transaction_category import TransactionCategory
 from datetime import date
 from src.models.enums import TransactionType
 from src.models.transaction import Transaction
-from unittest.mock import MagicMock
 from src.models.transactions_manager import TransactionManager
 
 # =====================================================================
@@ -30,7 +29,6 @@ def test_validate_inputs_success(mocker):
 ])
 def test_validate_inputs_failures(category, description, amount, expected_msg, error):
     """Debe mostrar el error correcto en el popup y retornar False ante inputs inválidos."""
-    # mock_popup = mocker.patch('FreeSimpleGUI.popup_error')
     expected_result = {
             "error": error,
             "message": expected_msg
@@ -40,20 +38,32 @@ def test_validate_inputs_failures(category, description, amount, expected_msg, e
     
     assert result["message"] == expected_result["message"]
     assert result["error"] == expected_result["error"]
-    # mock_popup.assert_called_once_with(expected_msg)
 
 
 # =====================================================================
 # TESTS PARA: save_transaction
 # =====================================================================
 
-def test_save_transaction_invalid_inputs(mocker):
+def test_save_transaction_invalid_inputs():
     """Debe retornar False inmediatamente si la validación falla sin abrir ventanas."""
-    mocker.patch("src.models.transactions_manager.sg.popup_error") 
     
     result = TransactionManager.save_transaction(TransactionType.EXPENSE, "", "", "")
     
     assert result is False
+    
+def test_save_transaction_valid_inputs_as_Expense():
+    """Debe retornar True ya que la transaccion se guarda de manera esperada como Expense"""
+    
+    result = TransactionManager.save_transaction(TransactionType.EXPENSE, "0", "Test Expense", "1500")
+    
+    assert result is True
+    
+def test_save_transaction_valid_inputs_as_Income():
+    """Debe retornar True ya que la transaccion se guarda de manera esperada como Income"""
+    
+    result = TransactionManager.save_transaction(TransactionType.INCOME, "1", "Test Income", "1500")
+    
+    assert result is True
 
     
 # ==========================================
