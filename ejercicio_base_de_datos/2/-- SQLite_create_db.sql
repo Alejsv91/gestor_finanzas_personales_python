@@ -1,29 +1,51 @@
 -- SQLite
-CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    full_name varchar(200)  NOT NULL,
-    email varchar(255) UNIQUE NOT NULL,
-    registration_date NOT NULL DEFAULT (datetime('now', 'localtime'))
-)
+-- sqlite no soport numeric o decimal, consulte a la IA 
+-- y me recomendo agregarlo como integer y que se maneja como centavos
+-- Con date me recomendo dejarlo como texto
 
-CREATE TABLE IF NOT EXISTS payment_method (
+CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    method_type varchar(40) NOT NULL,
-    bank_name varchar(40) NOT NULL
-)
+    code VARCHAR(255) UNIQUE NOT NULL,
+    price INTEGER NOT NULL,
+    entry_date TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    brand VARCHAR(40) NOT NULL,
+    stock_available INTEGER NOT NULL,
+    name VARCHAR(60)
+);
+
+CREATE TABLE IF NOT EXISTS shopping_carts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    buyer_email varchar(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS shopping_cart_product (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id INTEGER,
+    shopping_cart_id INTEGER,
+    quantity INTEGER NOT NULL,
+    total_amount INTEGER NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (shopping_cart_id) REFERENCES shopping_carts(id)
+);
 
 CREATE TABLE IF NOT EXISTS invoices (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    invoice_number BIGINT UNIQUE NOT NULL,
-    purchase_date (datetime('now', 'localtime')),
-    total_amount FLOAT,
-    user_id INTEGER,
-    payment_method INTEGER, 
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (payment_method_id) REFERENCES payment_method(id)
-    )
+    invoice_number INTEGER UNIQUE NOT NULL,
+    purchase_date TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    buyer_email varchar(50) NOT NULL,
+    total_amount INTEGER NOT NULL
+);
 
+CREATE TABLE IF NOT EXISTS product_per_invoice (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id,
+    invoice_id,
+    quantity INTEGER NOT NULL,
+    total_amount INTEGER NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES produts(id),
+    FOREIGN KEY (invoice_id) REFERENCES invoices(id)
+);
 
-
-
+ALTER TABLE invoices ADD COLUMN user_phone_number TEXT
+ALTER TABLE invoices ADD COLUMN employee_code TEXT  
 
