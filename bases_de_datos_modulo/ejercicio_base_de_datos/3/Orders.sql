@@ -12,6 +12,9 @@
 -- 5. Finalmente, la tabla `special_requests` extiende los detalles específicos de cada 
 --    artículo solicitado en una relación 1:N con la tabla asociativa `order_item`.
 
+-- En este link puedes ver el diagrama
+-- https://drawsql.app/teams/alejandro-solano/diagrams/ejercicio-1-normalizacion
+
 
 CREATE TABLE `customers`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
