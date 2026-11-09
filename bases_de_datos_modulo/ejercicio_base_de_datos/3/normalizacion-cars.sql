@@ -11,7 +11,7 @@
 -- •	car_insurance_policies: tabla intermedia para la relación muchos a muchos entre autos y pólizas, evitando listas en una celda (1FN).
 
 -- En este link puedes ver el diagrama
--- https://drawsql.app/teams/alejandro-solano/diagrams/ejericio-3-normalizacion-cars
+-- https://drawsql.app/teams/alejandro-solano/diagrams/ejericio-3-normalizacion-cars 
 
 
 CREATE TABLE `cars`(
