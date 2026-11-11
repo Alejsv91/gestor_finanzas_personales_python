@@ -46,6 +46,6 @@ CREATE TABLE IF NOT EXISTS product_per_invoice (
     FOREIGN KEY (invoice_id) REFERENCES invoices(id)
 );
 
--- ALTER TABLE invoices ADD COLUMN user_phone_number TEXT;
--- ALTER TABLE invoices ADD COLUMN employee_code TEXT;
+ALTER TABLE invoices ADD COLUMN user_phone_number TEXT;
+ALTER TABLE invoices ADD COLUMN employee_code TEXT;
 
