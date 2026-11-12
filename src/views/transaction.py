@@ -90,8 +90,13 @@ class TransactionView:
         self.window[ExpenseKey.SAVE].update(disabled=self._save_disabled)
     
     def save_transaction(self, values) -> bool:
-        
-        return TransactionManager.save_transaction(self.transaction_type, values[ExpenseKey.CATEGORY], 
+        status = TransactionManager.validate_inputs(values[ExpenseKey.CATEGORY], 
+                                            values[ExpenseKey.DESCRIPTION], values[ExpenseKey.AMOUNT])
+        if status["error"]:
+            sg.popup_error(status["message"])
+            return False
+        else:
+            return TransactionManager.save_transaction(self.transaction_type, values[ExpenseKey.CATEGORY], 
                                             values[ExpenseKey.DESCRIPTION], values[ExpenseKey.AMOUNT])
         
         
