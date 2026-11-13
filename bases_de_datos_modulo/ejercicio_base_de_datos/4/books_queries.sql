@@ -1,3 +1,5 @@
+-- Toda la tarea esta dentro de la carpeta 4
+
 -- 1.Obtenga todos los libros y sus autores (en caso de tenerlos)
 SELECT b.id, b.name AS 'Book Name', a.id, a.name AS 'Author Name'
 FROM books b
