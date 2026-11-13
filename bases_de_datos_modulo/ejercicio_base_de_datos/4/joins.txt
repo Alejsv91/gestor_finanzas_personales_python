@@ -1,0 +1,19 @@
+A. ORDER BY: Ordena los resultados de la consulta, según las columnas. Puede ser ASC o DESC
+-- SELECT col1 FROM tabla ORDER BY col1 ASC|DESC;
+
+B. LIMIT: Es la cantidad de filas que puede mostrar una consulta
+-- SELECT col1 FROM tabla LIMIT numero;
+
+C. GROUP BY: Agrupa filas que tienen los mismos valores en columnas específicas
+-- SELECT col1, COUNT(*) FROM tabla GROUP BY col1;
+
+D. INNER JOIN: Devuelve únicamente las filas donde existe una coincidencia exacta en ambas tablas según la condición indicada.
+-- SELECT * FROM T1 INNER JOIN T2 ON T1.id = T2.t1_id;
+
+E. LEFT JOIN: Devuelve todas las filas de la tabla izquierda (T1) y las filas coincidentes de la tabla derecha (T2).
+ Si no hay coincidencia, rellena con NULL.
+ -- SELECT * FROM T1 LEFT JOIN T2 ON T1.id = T2.t1_id;
+
+F. RIGHT JOIN: Devuelve todas las filas de la tabla derecha (T2) y las filas coincidentes de la tabla izquierda (T1). 
+Si no hay coincidencia, rellena con NULL.
+-- SELECT * FROM T1 RIGHT JOIN T2 ON T1.id = T2.t1_id;
