@@ -1,7 +1,7 @@
 -- 1.Obtenga todos los libros y sus autores (en caso de tenerlos)
 SELECT b.id, b.name AS 'Book Name', a.id, a.name AS 'Author Name'
 FROM books b
-INNER JOIN authors  a on a.id = b.author_id;
+LEFT JOIN authors  a on a.id = b.author_id;
 
 -- 2. Obtenga todos los libros que no tienen autor
 SELECT *
