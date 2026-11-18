@@ -6,16 +6,15 @@ DECLARE
         {"product_id": 1, "quantity": 2},
         {"product_id": 2, "quantity": 5}
     ]';
-    v_item RECORD; -- Faltaba declarar esta variable
+    v_item RECORD; 
     v_stock INT;
     v_product_price DECIMAL(10,2);
     v_user_id INT := 1;
     v_user_exist INT;
     v_bill_id INT;
     v_bill_product_id_temp INT;
-    v_bill_product_ids INT[] := '{}'; -- Inicializado como arreglo vacío
-    v_total DECIMAL(10,2) := 0; -- Inicializado en 0 para evitar NULL
-	
+    v_bill_product_ids INT[] := '{}'; 
+    v_total DECIMAL(10,2) := 0; 
 BEGIN
     -- 1. Confirmar que el usuario que realiza la compra existe en la DB
     SELECT COUNT(id) INTO v_user_exist
