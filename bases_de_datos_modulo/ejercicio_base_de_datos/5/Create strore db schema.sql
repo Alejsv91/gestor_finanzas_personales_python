@@ -26,6 +26,7 @@ CREATE TABLE bills (
     date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id INTEGER NOT NULL,
     total DECIMAL(10, 2) NOT NULL,
+	status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -38,6 +39,3 @@ CREATE TABLE product_bill (
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (bill_id) REFERENCES bills(id)
 );
-
-ALTER TABLE bills
-ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE';

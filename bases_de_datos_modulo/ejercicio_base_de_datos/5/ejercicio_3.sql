@@ -2,7 +2,7 @@ SET search_path TO store_db;
 
 DO $$
 DECLARE
-    v_return_bill INT := 5;
+    v_return_bill INT := 7;
     v_bill_status VARCHAR(20);
     v_row RECORD;
 BEGIN
