@@ -38,3 +38,6 @@ CREATE TABLE product_bill (
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (bill_id) REFERENCES bills(id)
 );
+
+ALTER TABLE bills
+ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE';
